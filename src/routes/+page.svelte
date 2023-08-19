@@ -3,6 +3,7 @@
     import { monieStore } from '$lib/stores/monie';
     import Mine from '$lib/components/Mine.svelte';
     import Sell from '$lib/components/Sell.svelte';
+    import Store from '$lib/components/Store.svelte';
 
     /**
      * @type {number}
@@ -31,3 +32,4 @@
 
 <Mine />
 <Sell />
+<Store />
