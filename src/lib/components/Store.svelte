@@ -1,5 +1,6 @@
 <script>
     import { inventoryStore } from '$lib/stores/store'
+    import { playerStore } from '$lib/stores/player';
 
     /**
      * @type {any[]}
@@ -8,6 +9,25 @@
 	inventoryStore.subscribe((value) => {
 		inventory = value;
 	});
+
+    /**
+     * @param {number} id
+     */
+    async function buy(id) {
+        let item = inventory.find(item => item.id === id);
+        if (item.id === 1) {
+            playerStore.update((player) => {
+                player.pick_upgrades += 1
+                player.monie -= item.price
+                return player
+            })
+            inventoryStore.update((inv) => {
+                let itemIndex = inv.findIndex(item => item.id === id);
+                inv[itemIndex].price += (inv[itemIndex].price * 0.1)
+                return inv
+            })
+        }
+    }
 </script>
 
 <h1>Welcome to the store</h1>
@@ -20,7 +40,7 @@
             <p>{item.name}</p>
             <p>{item.description}</p>
             <p>{item.price}</p>
-            <button>buy</button>
+            <button on:click={() => buy(item.id)}>buy</button>
         </div>
     {/each}
 </div>
