@@ -3,7 +3,7 @@
     import { playerStore } from '$lib/stores/player';
 
     /**
-     * @type {{ monie: number; pick_upgrades: number; }}
+     * @type {{ ore: number; monie: number; pick_upgrades: number; }}
      */
     let player
     playerStore.subscribe((value) => {
@@ -19,18 +19,18 @@
 	});
     
     async function sellAllOre() {
-        playerStore.update((currentPlayer) => {
-            currentPlayer.monie += (orePrice * currentPlayer.ore)
-            currentPlayer.ore = 0
-            return currentPlayer
+        playerStore.update((player) => {
+            player.monie += (orePrice * player.ore)
+            player.ore = 0
+            return player
         })
     }
 
     async function sellOneOre() {
-        playerStore.update((currentPlayer) => {
-            currentPlayer.monie += orePrice
-            currentPlayer.ore -= 1
-            return currentPlayer
+        playerStore.update((player) => {
+            player.monie += orePrice
+            player.ore -= 1
+            return player
         })
     }
 </script>
@@ -39,5 +39,13 @@
 <p>Ore is selling for {orePrice} monies</p>
 <p>You have {player.monie.toFixed(2)} monies</p>
 
-<button on:click={sellOneOre}>sell one!</button>
-<button on:click={sellAllOre}>sell all!</button>
+{#if player.ore > 0}
+    <button on:click={sellOneOre}>sell one!</button>
+{:else}
+    <button on:click={sellOneOre} disabled>sell one!</button>
+{/if}
+{#if player.ore > 1}
+    <button on:click={sellAllOre}>sell all!</button>
+{:else}
+    <button on:click={sellAllOre} disabled>sell all!</button>
+{/if}
