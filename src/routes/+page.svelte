@@ -4,6 +4,8 @@
     import Store from '$lib/components/Store.svelte';
 </script>
 
-<Mine />
-<Sell />
-<Store />
+<div class="container mx-auto grid md:grid-cols-2 xl:grid-cols-3">
+    <Mine />
+    <Sell />
+    <Store />
+</div>

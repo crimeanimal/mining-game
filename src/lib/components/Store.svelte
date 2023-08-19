@@ -50,21 +50,24 @@
     }
 </script>
 
-<h1>Welcome to the store</h1>
-<p>Here you can buy upgrades for your equipment</p>
+<div class="container">
+    <p class="font-bold text-3xl">Welcome to the Store</p>
+    <p>Here you can buy upgrades for your equipment</p>
 
-<h3>Inventory:</h3>
-<div>
-    {#each inventory as item (item.id)}
-        <div>
-            <p>{item.name}</p>
-            <p>{item.description}</p>
-            <p>{item.price}</p>
-            {#if item.price > player.monie}
-                <button on:click={() => buy(item.id)} disabled>buy</button>
-            {:else}
-                <button on:click={() => buy(item.id)}>buy</button>
-            {/if}
-        </div>
-    {/each}
+    <h3>Inventory:</h3>
+
+    <div class="grid grid-cols-2">
+        {#each inventory as item (item.id)}
+            <div>
+                <p class="font-bold">{item.name}</p>
+                <p>{item.description}</p>
+                <p>{'₥'+item.price.toFixed(2)}</p>
+                {#if item.price > player.monie}
+                    <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buy(item.id)} disabled>buy</button>
+                {:else}
+                    <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buy(item.id)}>buy</button>
+                {/if}
+            </div>
+        {/each}
+    </div>
 </div>
