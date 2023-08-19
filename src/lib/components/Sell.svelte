@@ -1,6 +1,7 @@
 <script>
     import { oreStore } from '$lib/stores/ore.js';
     import { playerStore } from '$lib/stores/player';
+    import {onMount} from 'svelte';
 
     /**
      * @type {{ ore: number; monie: number; pick_upgrades: number; }}
@@ -17,6 +18,26 @@
     oreStore.subscribe((value) => {
 		orePrice = value;
 	});
+
+
+    function changePrice() {
+        oreStore.update((orePrice) => {
+            let change = orePrice * 0.1
+            if (Math.random() > 0.5) {
+                orePrice += change
+            } else {
+                orePrice -= change
+            }
+            return orePrice
+        })
+    }
+
+    onMount(() => {
+        const interval = setInterval(changePrice, 1000);
+        return () => {
+        clearInterval(interval);
+        };
+    });
     
     async function sellAllOre() {
         playerStore.update((player) => {
@@ -36,7 +57,7 @@
 </script>
 
 <p>Sell ore to get monie</p>
-<p>Ore is selling for {orePrice} monies</p>
+<p>Ore is selling for {orePrice.toFixed(2)} monies</p>
 <p>You have {player.monie.toFixed(2)} monies</p>
 
 {#if player.ore > 0}
