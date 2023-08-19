@@ -35,6 +35,18 @@
                 return inv
             })
         }
+        if (item.id === 2) {
+            playerStore.update((player) => {
+                player.drills += 1
+                player.monie -= item.price
+                return player
+            })
+            inventoryStore.update((inv) => {
+                let itemIndex = inv.findIndex(item => item.id === id);
+                inv[itemIndex].price += (inv[itemIndex].price * 0.1)
+                return inv
+            })
+        }
     }
 </script>
 
