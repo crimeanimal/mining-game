@@ -3,6 +3,14 @@
     import { playerStore } from '$lib/stores/player';
 
     /**
+     * @type {{ ore: number; monie: number; pick_upgrades: number; }}
+     */
+     let player
+    playerStore.subscribe((value) => {
+        player = value
+    })
+    
+    /**
      * @type {any[]}
      */
     let inventory=[];
@@ -40,7 +48,11 @@
             <p>{item.name}</p>
             <p>{item.description}</p>
             <p>{item.price}</p>
-            <button on:click={() => buy(item.id)}>buy</button>
+            {#if item.price > player.monie}
+                <button on:click={() => buy(item.id)} disabled>buy</button>
+            {:else}
+                <button on:click={() => buy(item.id)}>buy</button>
+            {/if}
         </div>
     {/each}
 </div>
