@@ -24,7 +24,7 @@
         oreStore.update((orePrice) => {
             let change
             if (Math.random() > 0.5) {
-                change = orePrice * 0.1111112
+                change = orePrice * 0.12
                 orePrice += change
             } else {
                 change = orePrice * 0.1
@@ -41,7 +41,7 @@
         };
     });
     
-    async function sellAllOre() {
+    function sellAllOre() {
         playerStore.update((player) => {
             player.monie += (orePrice * player.ore)
             player.ore = 0
@@ -49,7 +49,7 @@
         })
     }
 
-    async function sellOneOre() {
+    function sellOneOre() {
         playerStore.update((player) => {
             player.monie += orePrice
             player.ore -= 1
