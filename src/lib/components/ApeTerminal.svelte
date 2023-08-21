@@ -1,5 +1,6 @@
 <script>
     import {onMount} from 'svelte';
+    // @ts-ignore
     import { apePriceHistoryStore, apePriceStore } from '$lib/stores/ape';
     import { playerStore } from '$lib/stores/player';
     import Chart from 'chart.js/auto';
@@ -20,7 +21,7 @@
     * @type {number[]} 
     */
     let apePriceHistory=[]
-    apePriceHistoryStore.subscribe((value) => {
+    apePriceHistoryStore.subscribe((/** @type {number[]} */ value) => {
 		apePriceHistory = value;
 	});
 
@@ -28,7 +29,7 @@
      * @type {number}
      */
     let apePrice
-    apePriceStore.subscribe((value) => {
+    apePriceStore.subscribe((/** @type {number} */ value) => {
 		apePrice = value;
 	});
 
@@ -111,7 +112,7 @@
     }
 
     function changePrice() {
-        apePriceStore.update((apePrice) => {
+        apePriceStore.update((/** @type {number} */ apePrice) => {
             let change
             if (Math.random() > 0.99999) {
                 if (player.apes > 0) {
@@ -139,7 +140,7 @@
                 apePrice -= change
             }
             let time = new Date().toLocaleTimeString()
-            apePriceHistoryStore.update(priceHistory => [...priceHistory, apePrice])
+            apePriceHistoryStore.update((/** @type {any} */ priceHistory) => [...priceHistory, apePrice])
             addData(chart, time, apePrice)
             return apePrice
         })
