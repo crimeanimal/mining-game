@@ -3,12 +3,21 @@
     import { playerStore } from '$lib/stores/player';
     // @ts-ignore
     import { messageStore } from '$lib/stores/message';
+    import kaching from '$lib/sounds/kaching.mp3'
     import {onMount} from 'svelte';
     import Chart from 'chart.js/auto';
     import { Colors } from 'chart.js';
+    import { settingsStore } from '$lib/stores/settings';
 
     Chart.register(Colors);
 
+    /**
+     * @type {{ sounds: boolean; }}
+     */
+    let settings
+    settingsStore.subscribe((value) => {
+        settings = value
+    })
 
     /**
      * @type {{ ore: number; monie: number; pick_upgrades: number; }}
@@ -141,6 +150,25 @@
             return orePrice
         })
     }
+
+    let oreAmountBuy = 1
+    let oreAmountSell = 1
+
+    const sleep = (/** @type {number} */ ms) => new Promise(r => setTimeout(r, ms));
+
+    /**
+     * @param {number} oreAmount
+     */
+    async function chaChings(oreAmount) {
+        let i = 0
+        while (i < oreAmount) {
+            let cashRegister = new Audio(kaching)
+            cashRegister.volume = 0.2
+            cashRegister.play();
+            await sleep(50)
+            i++
+        }
+    }
     
     /**
      * @param {number} oreAmount
@@ -151,11 +179,11 @@
             player.ore -= oreAmount
             return player
         })
+        if (settings.sounds) {
+            chaChings(oreAmount)
+        }
         addMessage('Sold ' + oreAmount + ' ore at ₥' + orePrice.toLocaleString() + ' for a total of ₥' + (oreAmount*orePrice).toLocaleString())
     }
-
-    let oreAmountBuy = 1
-    let oreAmountSell = 1
 
     /**
      * @param {number} oreAmount
@@ -166,6 +194,9 @@
             player.ore += oreAmount
             return player
         })
+        if (settings.sounds) {
+            chaChings(oreAmount)
+        }
         addMessage('Bought ' + oreAmount + ' ore at ₥' + orePrice.toLocaleString() + ' for a total of ₥' + (oreAmount*orePrice).toLocaleString())
     }
 </script>
