@@ -2,6 +2,7 @@
     import ApeTerminal from '$lib/components/ApeTerminal.svelte';
     import Messages from '$lib/components/Messages.svelte';
     import Mine from '$lib/components/Mine.svelte';
+    import Save from '$lib/components/Save.svelte';
     import Sell from '$lib/components/Sell.svelte';
     import Store from '$lib/components/Store.svelte';
 </script>
@@ -16,6 +17,7 @@
         <Sell />
         <Store />
         <ApeTerminal />
+        <Save />
         <Messages />
     </div>
 </div>
