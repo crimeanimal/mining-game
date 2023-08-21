@@ -2,11 +2,12 @@
     // @ts-ignore
     import { messageStore } from '$lib/stores/message';
 
+
     /**
-     * @type {{ time: string; content: string; }[]}
+     * @type {any}
      */
     let messages
-    messageStore.subscribe((value) => {
+    messageStore.subscribe((/** @type {any} */ value) => {
         messages = value
     })
 </script>

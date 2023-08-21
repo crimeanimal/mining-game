@@ -6,11 +6,6 @@
     import {onMount} from 'svelte';
     import Chart from 'chart.js/auto';
 
-    let messages
-    messageStore.subscribe((value) => {
-        messages = value
-    })
-
     /**
      * @type {{ ore: number; monie: number; pick_upgrades: number; }}
      */
@@ -111,7 +106,7 @@
             time: new Date().toLocaleTimeString(),
             content: content
         }
-        messageStore.update((messages) => {
+        messageStore.update((/** @type {any} */ messages) => {
             return [message, ...messages]
         })
     }
