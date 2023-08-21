@@ -110,6 +110,14 @@
         })
     }
 
+    function sellTenOre() {
+        playerStore.update((player) => {
+            player.monie += (orePrice * 10)
+            player.ore -= 10
+            return player
+        })
+    }
+
     function sellOneOre() {
         playerStore.update((player) => {
             player.monie += orePrice
@@ -119,21 +127,28 @@
     }
 </script>
 
-<div class="container">
+<div class="container px-4">
     <p class="font-bold text-3xl">Welcome to the Ore Dump</p>
     <p>Sell ore to get monie</p>
     <p>Ore is selling for ₥{orePrice.toFixed(2)} monies</p>
     <p>You have ₥{player.monie.toFixed(2)} monies</p>
 
-    {#if player.ore > 0}
-        <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={sellOneOre}>sell one!</button>
-    {:else}
-        <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={sellOneOre} disabled>sell one!</button>
-    {/if}
-    {#if player.ore > 1}
-        <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={sellAllOre}>sell all!</button>
-    {:else}
-        <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={sellAllOre} disabled>sell all!</button>
-    {/if}
-    <canvas id='chart'></canvas>
+    <div class="grid grid-cols-2 px-4">
+        {#if player.ore > 0}
+            <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={sellOneOre}>sell one!</button>
+        {:else}
+            <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={sellOneOre} disabled>sell one!</button>
+        {/if}
+        {#if player.ore > 10}
+        <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={sellTenOre}>sell ten!</button>
+        {:else}
+            <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={sellTenOre} disabled>sell ten!</button>
+        {/if}
+        {#if player.ore > 1}
+            <button class="col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={sellAllOre}>sell all!</button>
+        {:else}
+            <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={sellAllOre} disabled>sell all!</button>
+        {/if}
+    </div>
+    <canvas id='chart' class=""></canvas>
 </div>

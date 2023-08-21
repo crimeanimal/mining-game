@@ -112,7 +112,7 @@
         };
     });
 </script>
-<div class="container">
+<div class="container px-4">
     <p class="font-bold text-3xl">Welcome to the Mines</p>
     <p>Current stone:</p>
     <p class="font-medium">{stone.name}</p>

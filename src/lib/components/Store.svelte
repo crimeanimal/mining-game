@@ -59,10 +59,22 @@
                 return inv
             })
         }
+        if (item.id === 4) {
+            playerStore.update((player) => {
+                player.drill_damage += 1
+                player.monie -= item.price
+                return player
+            })
+            inventoryStore.update((inv) => {
+                let itemIndex = inv.findIndex(item => item.id === id);
+                inv[itemIndex].price += (inv[itemIndex].price * 0.1)
+                return inv
+            })
+        }
     }
 </script>
 
-<div class="container">
+<div class="container px-4">
     <p class="font-bold text-3xl">Welcome to the Store</p>
     <p>Here you can buy upgrades for your equipment</p>
 
