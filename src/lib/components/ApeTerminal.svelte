@@ -186,12 +186,12 @@
         {:else}
             <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellApe(1)} disabled>sell one!</button>
         {/if}
-        {#if player.apes > 10}
+        {#if player.apes >= 10}
             <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellApe(10)}>sell ten!</button>
         {:else}
             <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellApe(10)} disabled>sell ten!</button>
         {/if}
-        {#if player.apes > apeAmountSell && apeAmountSell != 0}
+        {#if player.apes >= apeAmountSell && apeAmountSell != 0}
             <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={apeAmountSell} />
             <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg" on:click={() => sellApe(apeAmountSell)}>
                 sell {apeAmountSell}!

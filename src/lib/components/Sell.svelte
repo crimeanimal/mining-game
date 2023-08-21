@@ -183,12 +183,12 @@
         {:else}
             <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellOre(1)} disabled>sell one!</button>
         {/if}
-        {#if player.ore > 10}
+        {#if player.ore >= 10}
             <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellOre(10)}>sell ten!</button>
         {:else}
             <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellOre(10)} disabled>sell ten!</button>
         {/if}
-        {#if player.ore > oreAmountSell && oreAmountSell != 0}
+        {#if player.ore >= oreAmountSell && oreAmountSell != 0}
             <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={oreAmountSell} />
             <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg" on:click={() => sellOre(oreAmountSell)}>
                 sell {oreAmountSell}!
