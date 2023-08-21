@@ -154,6 +154,9 @@
         addMessage('Sold ' + oreAmount + ' ore at ₥' + orePrice.toFixed(2) + ' for a total of ₥' + (oreAmount*orePrice).toFixed(2))
     }
 
+    let oreAmountBuy = 0
+    let oreAmountSell = 0
+
     /**
      * @param {number} oreAmount
      */
@@ -178,17 +181,28 @@
         {#if player.ore > 0}
             <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellOre(1)}>sell one!</button>
         {:else}
-            <button class="bg-red-700 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellOre(1)} disabled>sell one!</button>
+            <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellOre(1)} disabled>sell one!</button>
         {/if}
         {#if player.ore > 10}
             <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellOre(10)}>sell ten!</button>
         {:else}
-            <button class="bg-red-700 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellOre(10)} disabled>sell ten!</button>
+            <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellOre(10)} disabled>sell ten!</button>
+        {/if}
+        {#if player.ore > oreAmountSell && oreAmountSell != 0}
+            <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={oreAmountSell} />
+            <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg" on:click={() => sellOre(oreAmountSell)}>
+                sell {oreAmountSell}!
+            </button>
+        {:else}
+            <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={oreAmountSell} />
+            <button class=" h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" disabled on:click={() => sellOre(oreAmountSell)}>
+                sell {oreAmountSell}!
+            </button>
         {/if}
         {#if player.ore > 1}
             <button class="bg-red-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellOre(player.ore)}>sell all!</button>
         {:else}
-            <button class="bg-red-700 col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellOre(player.ore)} disabled>sell all!</button>
+            <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellOre(player.ore)} disabled>sell all!</button>
         {/if}
     </div>
     <canvas id='chart' class=""></canvas>
@@ -196,17 +210,28 @@
         {#if player.monie > orePrice}
             <button class="bg-green-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyOre(1)}>buy one!</button>
         {:else}
-            <button class="bg-green-700 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(1)} disabled>buy one!</button>
+            <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(1)} disabled>buy one!</button>
         {/if}
         {#if player.monie > (orePrice * 10)}
             <button class=" bg-green-700h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyOre(10)}>buy ten!</button>
         {:else}
-            <button class="bg-green-700 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(10)} disabled>buy ten!</button>
+            <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(10)} disabled>buy ten!</button>
+        {/if}
+        {#if player.monie > (orePrice * oreAmountBuy) && oreAmountBuy != 0}
+            <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={oreAmountBuy} />
+            <button class="bg-green-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyOre(oreAmountBuy)}>
+                buy {oreAmountBuy}!
+            </button>
+        {:else}
+            <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={oreAmountBuy} />
+            <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" disabled on:click={() => buyOre(oreAmountBuy)}>
+                buy {oreAmountBuy}!
+            </button>
         {/if}
         {#if player.monie > (player.monie / orePrice)}
             <button class="bg-green-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyOre(Math.round((player.monie / orePrice)))}>buy {Math.round((player.monie / orePrice))}!</button>
         {:else}
-            <button class="bg-green-700 col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(player.ore)} disabled>buy all!</button>
+            <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(Math.round((player.monie / orePrice)))} disabled>buy {Math.round((player.monie / orePrice))}!</button>
         {/if}
     </div>
 </div>
