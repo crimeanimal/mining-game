@@ -5,9 +5,11 @@ import Mine from '$lib/components/Mine.svelte';
     import Store from '$lib/components/Store.svelte';
 </script>
 
-<div class="container mx-auto grid md:grid-cols-2 xl:grid-cols-3">
-    <Mine />
-    <Sell />
-    <Store />
-    <Messages />
+<div class="dark:bg-slate-800 dark:text-gray-100 w-full h-full mx-0">
+    <div class="container mx-auto grid md:grid-cols-2 xl:grid-cols-3">
+        <Mine />
+        <Sell />
+        <Store />
+        <Messages />
+    </div>
 </div>

@@ -5,6 +5,10 @@
     import { messageStore } from '$lib/stores/message';
     import {onMount} from 'svelte';
     import Chart from 'chart.js/auto';
+    import { Colors } from 'chart.js';
+
+    Chart.register(Colors);
+
 
     /**
      * @type {{ ore: number; monie: number; pick_upgrades: number; }}
@@ -38,6 +42,9 @@
         const interval = setInterval(changePrice, 1000);
         
         const ctx = document.getElementById('chart');
+        Chart.defaults.backgroundColor = '#d3d3d3';
+        Chart.defaults.borderColor = '#d3d3d3';
+        Chart.defaults.color = '#d3d3d3';
 
         // @ts-ignore
         chart = new Chart(ctx, {
@@ -46,20 +53,22 @@
                 labels: [new Date().toLocaleTimeString()],
                 datasets: [{
                         label: 'Ore Price',
-                        data: [10],
-                        fill: false,
-                        borderColor: 'rgb(75, 192, 192)',
-                        tension: 0.1
+                        data: [],
+                        fill: true,
+                        tension: 0.1,
+                        borderColor: 'rgba(248, 150, 201, 1)',
+                        backgroundColor: 'rgba(248, 150, 201, .25)',
                     }]
             },
             options: {
                 scales: {
-                y: {
-                    beginAtZero: true
-                }
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
         });
+        
 
         return () => {
             clearInterval(interval);
@@ -128,8 +137,6 @@
             let time = new Date().toLocaleTimeString()
             orePriceTime = [...orePriceTime, time]
             orePriceHistoryStore.update(priceHistory => [...priceHistory, orePrice])
-            console.log(orePriceHistory)
-            console.log(orePriceTime)
             addData(chart, time, orePrice)
             return orePrice
         })
@@ -163,42 +170,43 @@
 <div class="container px-4">
     <p class="font-bold text-3xl">Welcome to the Ore Dump</p>
     <p>Sell ore to get monie</p>
-    <p>Ore is selling for ₥{orePrice.toFixed(2)} monies</p>
+    <p>Ore is selling for <span class="font-bold text-1xl">₥{orePrice.toFixed(2)}</span> monies</p>
+    <p>You have <span class="font-bold text-1xl">{Math.round(player.ore)}</span> ore</p>
     <p>You have ₥{player.monie.toFixed(2)} monies</p>
 
     <div class="grid grid-cols-2 px-4">
         {#if player.ore > 0}
-            <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellOre(1)}>sell one!</button>
+            <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellOre(1)}>sell one!</button>
         {:else}
-            <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellOre(1)} disabled>sell one!</button>
+            <button class="bg-red-700 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellOre(1)} disabled>sell one!</button>
         {/if}
         {#if player.ore > 10}
-        <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellOre(10)}>sell ten!</button>
+            <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellOre(10)}>sell ten!</button>
         {:else}
-            <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellOre(10)} disabled>sell ten!</button>
+            <button class="bg-red-700 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellOre(10)} disabled>sell ten!</button>
         {/if}
         {#if player.ore > 1}
-            <button class="col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellOre(player.ore)}>sell all!</button>
+            <button class="bg-red-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellOre(player.ore)}>sell all!</button>
         {:else}
-            <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellOre(player.ore)} disabled>sell all!</button>
+            <button class="bg-red-700 col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellOre(player.ore)} disabled>sell all!</button>
         {/if}
     </div>
     <canvas id='chart' class=""></canvas>
     <div class="grid grid-cols-2 px-4">
         {#if player.monie > orePrice}
-            <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyOre(1)}>buy one!</button>
+            <button class="bg-green-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyOre(1)}>buy one!</button>
         {:else}
-            <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(1)} disabled>buy one!</button>
+            <button class="bg-green-700 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(1)} disabled>buy one!</button>
         {/if}
         {#if player.monie > (orePrice * 10)}
-        <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyOre(10)}>buy ten!</button>
+            <button class=" bg-green-700h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyOre(10)}>buy ten!</button>
         {:else}
-            <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(10)} disabled>buy ten!</button>
+            <button class="bg-green-700 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(10)} disabled>buy ten!</button>
         {/if}
         {#if player.monie > (player.monie / orePrice)}
-            <button class="col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyOre(Math.round((player.monie / orePrice)))}>buy {Math.round((player.monie / orePrice))}!</button>
+            <button class="bg-green-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyOre(Math.round((player.monie / orePrice)))}>buy {Math.round((player.monie / orePrice))}!</button>
         {:else}
-            <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(player.ore)} disabled>buy all!</button>
+            <button class="bg-green-700 col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(player.ore)} disabled>buy all!</button>
         {/if}
     </div>
 </div>

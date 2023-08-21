@@ -117,7 +117,7 @@
     <p>Current stone:</p>
     <p class="font-medium">{stone.name}</p>
     <p>Difficulty: {stone.difficulty}</p>
-    <p>Health: {stone.health}</p>
+    <p>Stone Health: {stone.health}</p>
     <p>Reward: {stone.reward}</p>
     <br>
     <p class={ bounce ? 'animate-bounce' : ''}>You are level {player.level}</p>
