@@ -31,7 +31,7 @@
             })
             inventoryStore.update((inv) => {
                 let itemIndex = inv.findIndex(item => item.id === id);
-                inv[itemIndex].price += (inv[itemIndex].price * 0.1)
+                inv[itemIndex].price += (inv[itemIndex].price * 0.03)
                 return inv
             })
         }
@@ -43,7 +43,7 @@
             })
             inventoryStore.update((inv) => {
                 let itemIndex = inv.findIndex(item => item.id === id);
-                inv[itemIndex].price += (inv[itemIndex].price * 0.1)
+                inv[itemIndex].price += (inv[itemIndex].price * 0.03)
                 return inv
             })
         }
@@ -55,7 +55,7 @@
             })
             inventoryStore.update((inv) => {
                 let itemIndex = inv.findIndex(item => item.id === id);
-                inv[itemIndex].price += (inv[itemIndex].price * 0.1)
+                inv[itemIndex].price += (inv[itemIndex].price * 0.03)
                 return inv
             })
         }
@@ -67,7 +67,7 @@
             })
             inventoryStore.update((inv) => {
                 let itemIndex = inv.findIndex(item => item.id === id);
-                inv[itemIndex].price += (inv[itemIndex].price * 0.1)
+                inv[itemIndex].price += (inv[itemIndex].price * 0.03)
                 return inv
             })
         }
