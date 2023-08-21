@@ -151,11 +151,11 @@
             player.ore -= oreAmount
             return player
         })
-        addMessage('Sold ' + oreAmount + ' ore at ₥' + orePrice.toFixed(2) + ' for a total of ₥' + (oreAmount*orePrice).toFixed(2))
+        addMessage('Sold ' + oreAmount + ' ore at ₥' + orePrice.toLocaleString() + ' for a total of ₥' + (oreAmount*orePrice).toLocaleString())
     }
 
-    let oreAmountBuy = 0
-    let oreAmountSell = 0
+    let oreAmountBuy = 1
+    let oreAmountSell = 1
 
     /**
      * @param {number} oreAmount
@@ -166,16 +166,16 @@
             player.ore += oreAmount
             return player
         })
-        addMessage('Bought ' + oreAmount + ' ore at ₥' + orePrice.toFixed(2) + ' for a total of ₥' + (oreAmount*orePrice).toFixed(2))
+        addMessage('Bought ' + oreAmount + ' ore at ₥' + orePrice.toLocaleString() + ' for a total of ₥' + (oreAmount*orePrice).toLocaleString())
     }
 </script>
 
 <div class="container px-4">
     <p class="font-bold text-3xl">Welcome to the Ore Dump</p>
     <p>Sell ore to get monie</p>
-    <p>Ore is selling for <span class="font-bold text-1xl">₥{orePrice.toFixed(2)}</span> monies</p>
+    <p>Ore is selling for <span class="font-bold text-1xl">₥{orePrice.toLocaleString()}</span> monies</p>
     <p>You have <span class="font-bold text-1xl">{Math.round(player.ore)}</span> ore</p>
-    <p>You have ₥{player.monie.toFixed(2)} monies</p>
+    <p>You have ₥{player.monie.toLocaleString()} monies</p>
 
     <div class="grid grid-cols-2 px-4">
         {#if player.ore > 0}

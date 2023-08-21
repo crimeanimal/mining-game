@@ -7,6 +7,7 @@ export const playerStore = writable(
         xpPerLevel: 100,
         xp: 0,
         ore: 0,
+        apes: 0,
         monie: 0,
         pick_upgrades: 0,
         drills: 0,

@@ -86,7 +86,7 @@
                 <div>
                     <p class="font-bold">{item.name}</p>
                     <p>{item.description}</p>
-                    <p>{'₥'+item.price.toFixed(2)}</p>
+                    <p>{'₥'+item.price.toLocaleString()}</p>
                     {#if item.price > player.monie}
                         <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buy(item.id)} disabled>buy</button>
                     {:else}

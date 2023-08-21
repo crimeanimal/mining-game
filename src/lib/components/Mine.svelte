@@ -123,7 +123,7 @@
     <p class={ bounce ? 'animate-bounce' : ''}>You are level {player.level}</p>
     <p>You have {Math.round(player.xp)}xp</p>
     <p>You need {Math.round(player.xpPerLevel-player.xp)}xp to level up</p>
-    <p>You have {player.ore.toFixed(2)} ore</p>
+    <p>You have {player.ore.toLocaleString()} ore</p>
     <p>You have {player.pick_upgrades} pick upgrades and do {player.damage + (player.pick_upgrades * 0.1)} damage per hit</p>
     <p>You have {player.drills} drills</p>
     <p>Mine rocks to get more ore</p>
