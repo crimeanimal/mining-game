@@ -125,7 +125,7 @@
     <p>You need {Math.round(player.xpPerLevel-player.xp)}xp to level up</p>
     <p>You have {player.ore.toLocaleString()} ore</p>
     <p>You have {player.pick_upgrades} pick upgrades and do {player.damage + (player.pick_upgrades * 0.1)} damage per hit</p>
-    <p>You have {player.drills} drills</p>
+    <p>You have {player.drills} drills doing {player.drill_damage} damage per tick</p>
     <p>Mine rocks to get more ore</p>
 
     <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={mine}>mine!</button>
