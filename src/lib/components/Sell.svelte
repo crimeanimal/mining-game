@@ -174,7 +174,7 @@
     <p class="font-bold text-3xl">Welcome to the Ore Dump</p>
     <p>Sell ore to get monie</p>
     <p>Ore is selling for <span class="font-bold text-1xl">₥{orePrice.toLocaleString()}</span> monies</p>
-    <p>You have <span class="font-bold text-1xl">{Math.round(player.ore)}</span> ore</p>
+    <p>You have <span class="font-bold text-1xl">{player.ore.toLocaleString()}</span> ore</p>
     <p>You have ₥{player.monie.toLocaleString()} monies</p>
 
     <div class="grid grid-cols-2 px-4">
@@ -213,7 +213,7 @@
             <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(1)} disabled>buy one!</button>
         {/if}
         {#if player.monie > (orePrice * 10)}
-            <button class=" bg-green-700h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyOre(10)}>buy ten!</button>
+            <button class="bg-green-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyOre(10)}>buy ten!</button>
         {:else}
             <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(10)} disabled>buy ten!</button>
         {/if}

@@ -132,10 +132,10 @@
                 change = apePrice * 0.012
                 apePrice += change
             } else if (Math.random() > 0.2) {
-                change = apePrice * 0.01
+                change = apePrice * 0.02
                 apePrice -= change
-            } else {
-                change = apePrice * 0.03
+            } else if (Math.random() > 0) {
+                change = apePrice * 0.05
                 apePrice -= change
             }
             let time = new Date().toLocaleTimeString()
