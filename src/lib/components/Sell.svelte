@@ -1,7 +1,8 @@
 <script>
-    import { oreStore } from '$lib/stores/ore.js';
+    import { orePriceHistoryStore, oreStore } from '$lib/stores/ore.js';
     import { playerStore } from '$lib/stores/player';
     import {onMount} from 'svelte';
+    import Chart from 'chart.js/auto';
 
     /**
      * @type {{ ore: number; monie: number; pick_upgrades: number; }}
@@ -19,7 +20,68 @@
 		orePrice = value;
 	});
 
+    /**
+    * @type {number[]} 
+    */
+    let orePriceHistory=[]
+    orePriceHistoryStore.subscribe((value) => {
+		orePriceHistory = value;
+	});
 
+    /**
+     * @type {Chart<"line", number[], number>}
+     */
+    let chart
+    onMount(() => {
+        const interval = setInterval(changePrice, 1000);
+        
+        const ctx = document.getElementById('chart');
+
+        // @ts-ignore
+        chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [new Date().toLocaleTimeString()],
+                datasets: [{
+                        label: 'Ore Price',
+                        data: [10],
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+            },
+            options: {
+                scales: {
+                y: {
+                    beginAtZero: true
+                }
+                }
+            }
+        });
+
+        return () => {
+            clearInterval(interval);
+        };
+    });
+
+    /**
+     * @param {Chart<"line", number[], number>} chart
+     * @param {string} label
+     * @param {number} newData
+     */
+    function addData(chart, label, newData) {
+        // @ts-ignore
+        chart.data.labels.push(label);
+        chart.data.datasets.forEach((dataset) => {
+            dataset.data.push(newData);
+        });
+        chart.update();
+    }
+
+    /**
+     * @type {string[]}
+     */
+    let orePriceTime = []
     function changePrice() {
         oreStore.update((orePrice) => {
             let change
@@ -30,16 +92,15 @@
                 change = orePrice * 0.1
                 orePrice -= change
             }
+            let time = new Date().toLocaleTimeString()
+            orePriceTime = [...orePriceTime, time]
+            orePriceHistoryStore.update(priceHistory => [...priceHistory, orePrice])
+            console.log(orePriceHistory)
+            console.log(orePriceTime)
+            addData(chart, time, orePrice)
             return orePrice
         })
     }
-
-    onMount(() => {
-        const interval = setInterval(changePrice, 1000);
-        return () => {
-        clearInterval(interval);
-        };
-    });
     
     function sellAllOre() {
         playerStore.update((player) => {
@@ -74,4 +135,5 @@
     {:else}
         <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={sellAllOre} disabled>sell all!</button>
     {/if}
+    <canvas id='chart'></canvas>
 </div>
