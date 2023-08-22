@@ -4,6 +4,7 @@
     import fast_car from '$lib/music/fast_car.mp3'
     import { settingsStore } from "$lib/stores/settings";
     import { oreStore } from "$lib/stores/ore";
+    import { orePriceHistoryStore } from "$lib/stores/ore";
 
     /**
      * @type {{ sounds: boolean, music: boolean }}
@@ -19,6 +20,13 @@
     let orePrice
     oreStore.subscribe((value) => {
 		orePrice = value;
+	});
+    /**
+     * @type {number[]}
+     */
+    let orePriceHistory
+    orePriceHistoryStore.subscribe((value) => {
+		orePriceHistory = value;
 	});
 
     function toggleSound() {
@@ -40,6 +48,28 @@
         maximumFractionDigits: 2,
         notation: 'compact'
     })
+
+    /**
+     * @param {number} oldNumber
+     * @param {number} newNumber
+     */
+    function getPercentageChange(oldNumber, newNumber){
+        var decreaseValue = oldNumber - newNumber;
+
+        return (decreaseValue / oldNumber) * 100;
+    }
+
+    /**
+     * @type {number | bigint}
+     */
+    let changeSinceStart
+    $: if (orePriceHistory.length > 24) {
+            changeSinceStart = getPercentageChange(orePriceHistory.slice(-24)[0], orePrice)*-1
+            console.log(orePriceHistory.slice(-24)[0], orePrice, changeSinceStart)
+        } else {
+            changeSinceStart = getPercentageChange(orePriceHistory[0], orePrice)*-1
+            console.log(orePriceHistory[0], orePrice, changeSinceStart)
+        }
 
     /**
      * @type {HTMLAudioElement}
@@ -65,7 +95,7 @@
 
 <div class="dark:text-gray-100 grid grid-cols-2">
     <div>
-        <p class="font-bold px-4 text-3xl">Ore: ₥{stuffFormatter.format(orePrice)}</p>
+        <p class="font-bold px-4 text-3xl">Ore: ₥{stuffFormatter.format(orePrice)} <span class={changeSinceStart > 0 ? 'text-green-400' : changeSinceStart == 0 ? '' : 'text-red-400'}>{stuffFormatter.format(changeSinceStart)}%</span></p>
     </div>
     <div>
         <nav class="flex justify-end space-x-2 px-4">
