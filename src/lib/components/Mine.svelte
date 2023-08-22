@@ -6,6 +6,8 @@
     import {onMount} from 'svelte';
 
     let stuffFormatter = new Intl.NumberFormat("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
         notation: 'compact'
     })
 
@@ -76,20 +78,17 @@
             // @ts-ignore
             arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
         }
-        let min = 25 * (player.level*0.7)
-        let max = 50 * (player.level*0.7)
+        // let min = 25 * (player.level*0.7)
+        // let max = 50 * (player.level*0.7)
+        let min = stone.difficulty+=stone.difficulty*0.01
+        let max = stone.difficulty+=stone.difficulty*0.1
         let difficulty = Math.round(Math.floor(Math.random() * (max - min) + min))
-        console.log({
-            name: arr.join(' '),
-            difficulty: difficulty,
-            reward: Math.round(difficulty * (Math.random()*1))
-        })
         stoneStore.update((stone) => {
             stone = {
                 name: arr.join(' '),
-                health: Math.round(difficulty * (Math.random() * (0.7 - 1) + 0.7)),
+                health: Math.round(difficulty * (Math.random() * (0.7 - 0.5) + 0.5)),
                 difficulty: difficulty,
-                reward: Math.round(difficulty * (Math.random() * (0.5 - 1) + 0.5))
+                reward: Math.round(difficulty * (Math.random() * (0.7 - 0.5) + 0.5))
             }
             return stone
         })
