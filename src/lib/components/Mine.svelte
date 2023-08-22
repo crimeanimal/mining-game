@@ -5,6 +5,10 @@
     import nlp from 'compromise/two'
     import {onMount} from 'svelte';
 
+    let stuffFormatter = new Intl.NumberFormat("en-US", {
+        notation: 'compact'
+    })
+
 
     /**
      * @type {{ level: number, xpPerLevel: number, xp: number,ore: any, pick_upgrades: number, drills: number, damage: number, drill_damage: number  }}
@@ -116,16 +120,16 @@
     <p class="font-bold text-3xl">Welcome to the Mines</p>
     <p>Current stone:</p>
     <p class="font-medium">{stone.name}</p>
-    <p>Difficulty: {stone.difficulty}</p>
-    <p>Stone Health: {stone.health}</p>
-    <p>Reward: {stone.reward}</p>
+    <p>Difficulty: {stuffFormatter.format(stone.difficulty)}</p>
+    <p>Stone Health: {stuffFormatter.format(stone.health)}</p>
+    <p>Reward: {stuffFormatter.format(stone.reward)}</p>
     <br>
     <p class={ bounce ? 'animate-bounce' : ''}>You are level {player.level}</p>
-    <p>You have {Math.round(player.xp)}xp</p>
-    <p>You need {Math.round(player.xpPerLevel-player.xp)}xp to level up</p>
-    <p>You have {player.ore.toLocaleString()} ore</p>
-    <p>You have {player.pick_upgrades} pick upgrades and do {player.damage + (player.pick_upgrades * 0.1)} damage per hit</p>
-    <p>You have {player.drills} drills doing {player.drill_damage} damage per tick</p>
+    <p>You have {stuffFormatter.format(Math.round(player.xp))}xp</p>
+    <p>You need {stuffFormatter.format(Math.round(player.xpPerLevel-player.xp))}xp to level up</p>
+    <p>You have {stuffFormatter.format(player.ore)} ore</p>
+    <p>You have {stuffFormatter.format(player.pick_upgrades)} pick upgrades and do {stuffFormatter.format(player.damage + (player.pick_upgrades * 0.1))} damage per hit</p>
+    <p>You have {stuffFormatter.format(player.drills)} drills doing {stuffFormatter.format(player.drill_damage)} damage per tick</p>
     <p>Mine rocks to get more ore</p>
 
     <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={mine}>mine!</button>

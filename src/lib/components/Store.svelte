@@ -2,10 +2,14 @@
     import { inventoryStore } from '$lib/stores/store'
     import { playerStore } from '$lib/stores/player';
 
+    let stuffFormatter = new Intl.NumberFormat("en-US", {
+        notation: 'compact'
+    })
+
     /**
      * @type {{ ore: number; monie: number; pick_upgrades: number; level: number;}}
      */
-     let player
+    let player
     playerStore.subscribe((value) => {
         player = value
     })
@@ -86,7 +90,7 @@
                 <div>
                     <p class="font-bold">{item.name}</p>
                     <p>{item.description}</p>
-                    <p>{'₥'+item.price.toLocaleString()}</p>
+                    <p>{'₥'+stuffFormatter.format(item.price)}</p>
                     {#if item.price > player.monie}
                         <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buy(item.id)} disabled>buy</button>
                     {:else}

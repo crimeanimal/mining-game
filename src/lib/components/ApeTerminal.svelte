@@ -9,6 +9,11 @@
     import { messageStore } from '$lib/stores/message'
 
     Chart.register(Colors);
+
+    let stuffFormatter = new Intl.NumberFormat("en-US", {
+        notation: 'compact'
+    })
+
     /**
      * @type {{ ore: number; monie: number; pick_upgrades: number; apes: number; }}
      */
@@ -155,7 +160,7 @@
             player.apes -= apeAmount
             return player
         })
-        addMessage('Sold ' + apeAmount + ' ape at ₥' + apePrice.toLocaleString() + ' for a total of ₥' + (apeAmount*apePrice).toLocaleString())
+        addMessage('Sold ' + apeAmount + ' ape at ₥' + stuffFormatter.format(apePrice) + ' for a total of ₥' + stuffFormatter.format((apeAmount*apePrice)))
     }
 
     let apeAmountBuy = 1
@@ -170,16 +175,16 @@
             player.apes += apeAmount
             return player
         })
-        addMessage('Bought ' + apeAmount + ' apes at ₥' + apePrice.toLocaleString() + ' for a total of ₥' + (apeAmount*apePrice).toLocaleString())
+        addMessage('Bought ' + apeAmount + ' apes at ₥' + stuffFormatter.format(apePrice) + ' for a total of ₥' + stuffFormatter.format((apeAmount*apePrice)))
     }
 </script>
 
 <div class="container px-4">
     <p class="font-bold text-3xl">Welcome to the APE TERMINAL</p>
     <p>Sell apes to get monie</p>
-    <p>Apes are selling for <span class="font-bold text-1xl">₥{apePrice.toLocaleString()}</span> monies</p>
-    <p>You have <span class="font-bold text-1xl">{Math.round(player.apes)}</span> ape</p>
-    <p>You have ₥{player.monie.toLocaleString()} monies</p>
+    <p>Apes are selling for <span class="font-bold text-1xl">₥{stuffFormatter.format(apePrice)}</span> monies</p>
+    <p>You have <span class="font-bold text-1xl">{stuffFormatter.format(Math.round(player.apes))}</span> ape</p>
+    <p>You have ₥{stuffFormatter.format(player.monie)} monies</p>
 
     <div class="grid grid-cols-2 px-4">
         {#if player.apes > 0}
@@ -239,7 +244,7 @@
                 buy {apeAmountBuy}!
             </button>
         {/if}
-        {#if player.monie > (player.monie / apePrice)}
+        {#if player.monie > ((player.monie / apePrice)-1)}
             <button class="bg-green-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyApe(Math.round((player.monie / apePrice)))}>buy {Math.round((player.monie / apePrice))}!</button>
         {:else}
             <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyApe(Math.round((player.monie / apePrice)))} disabled>buy {Math.round((player.monie / apePrice))}!</button>

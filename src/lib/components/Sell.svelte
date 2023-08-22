@@ -84,6 +84,10 @@
         };
     });
 
+    let stuffFormatter = new Intl.NumberFormat("en-US", {
+        notation: 'compact'
+    })
+
     
     /**
      * @param {Chart<"line", number[], number>} chart
@@ -182,7 +186,7 @@
         if (settings.sounds) {
             chaChings(oreAmount)
         }
-        addMessage('Sold ' + oreAmount + ' ore at ₥' + orePrice.toLocaleString() + ' for a total of ₥' + (oreAmount*orePrice).toLocaleString())
+        addMessage('Sold ' + oreAmount + ' ore at ₥' + stuffFormatter.format(orePrice) + ' for a total of ₥' + stuffFormatter.format((oreAmount*orePrice)))
     }
 
     /**
@@ -197,16 +201,16 @@
         if (settings.sounds) {
             chaChings(oreAmount)
         }
-        addMessage('Bought ' + oreAmount + ' ore at ₥' + orePrice.toLocaleString() + ' for a total of ₥' + (oreAmount*orePrice).toLocaleString())
+        addMessage('Bought ' + oreAmount + ' ore at ₥' + stuffFormatter.format(orePrice) + ' for a total of ₥' + stuffFormatter.format((oreAmount*orePrice)))
     }
 </script>
 
 <div class="container px-4">
     <p class="font-bold text-3xl">Welcome to the Ore Dump</p>
     <p>Sell ore to get monie</p>
-    <p>Ore is selling for <span class="font-bold text-1xl">₥{orePrice.toLocaleString()}</span> monies</p>
-    <p>You have <span class="font-bold text-1xl">{player.ore.toLocaleString()}</span> ore</p>
-    <p>You have ₥{player.monie.toLocaleString()} monies</p>
+    <p>Ore is selling for <span class="font-bold text-1xl">₥{stuffFormatter.format(orePrice)}</span> monies</p>
+    <p>You have <span class="font-bold text-1xl">{stuffFormatter.format(player.ore)}</span> ore</p>
+    <p>You have ₥{stuffFormatter.format(player.monie)} monies</p>
 
     <div class="grid grid-cols-2 px-4">
         {#if player.ore > 0}
@@ -259,7 +263,7 @@
                 buy {oreAmountBuy}!
             </button>
         {/if}
-        {#if player.monie > (player.monie / orePrice)}
+        {#if player.monie > ((player.monie / orePrice)-1)}
             <button class="bg-green-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyOre(Math.round((player.monie / orePrice)))}>buy {Math.round((player.monie / orePrice))}!</button>
         {:else}
             <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(Math.round((player.monie / orePrice)))} disabled>buy {Math.round((player.monie / orePrice))}!</button>
