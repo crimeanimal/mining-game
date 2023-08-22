@@ -111,11 +111,11 @@
         chart.data.datasets.forEach((dataset) => {
             if (dataset.label === 'Ore Price') {
                 dataset.data.push(newData);
-                dataset.data = dataset.data.slice(-100);
+                dataset.data = dataset.data.slice(-60);
                 // @ts-ignore
                 chart.data.labels.push(label);
                 // @ts-ignore
-                chart.data.labels = chart.data.labels.slice(-100);
+                chart.data.labels = chart.data.labels.slice(-60);
                 chart.update();
             }
         });
