@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export const stoneStore = writable(
+export const stone = writable(
     {
         name: '',
         health: 0,

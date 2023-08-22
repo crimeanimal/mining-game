@@ -1,47 +1,15 @@
 <script>
-    import { orePriceHistoryStore, oreStore } from '$lib/stores/ore.js';
-    import { playerStore } from '$lib/stores/player';
+    import { ore } from '$lib/stores/ore.js';
+    import { player } from '$lib/stores/player';
     // @ts-ignore
-    import { messageStore } from '$lib/stores/message';
+    import { messages } from '$lib/stores/message';
     import kaching from '$lib/sounds/kaching.mp3'
     import {onMount} from 'svelte';
     import Chart from 'chart.js/auto';
     import { Colors } from 'chart.js';
-    import { settingsStore } from '$lib/stores/settings';
+    import { settings } from '$lib/stores/settings';
 
     Chart.register(Colors);
-
-    /**
-     * @type {{ sounds: boolean; }}
-     */
-    let settings
-    settingsStore.subscribe((value) => {
-        settings = value
-    })
-
-    /**
-     * @type {{ ore: number; monie: number; pick_upgrades: number; }}
-     */
-    let player
-    playerStore.subscribe((value) => {
-        player = value
-    })
-
-    /**
-     * @type {number}
-     */
-    let orePrice
-    oreStore.subscribe((value) => {
-		orePrice = value;
-	});
-
-    /**
-    * @type {number[]} 
-    */
-    let orePriceHistory=[]
-    orePriceHistoryStore.subscribe((value) => {
-		orePriceHistory = value;
-	});
 
     /**
      * @type {Chart<"line", number[], number>}
@@ -130,31 +98,21 @@
             time: new Date().toLocaleTimeString(),
             content: content
         }
-        messageStore.update((/** @type {any} */ messages) => {
-            return [message, ...messages]
-        })
+        $messages = [message, ...$messages]
     }
 
-    /**
-     * @type {string[]}
-     */
-    let orePriceTime = []
     function changePrice() {
-        oreStore.update((orePrice) => {
-            let change
-            if (Math.random() > 0.5) {
-                change = orePrice * 0.12
-                orePrice += change
-            } else {
-                change = orePrice * 0.1
-                orePrice -= change
-            }
-            let time = new Date().toLocaleTimeString()
-            orePriceTime = [...orePriceTime, time]
-            orePriceHistoryStore.update(priceHistory => [...priceHistory, orePrice])
-            addData(chart, time, orePrice)
-            return orePrice
-        })
+        let change
+        if (Math.random() > 0.5) {
+            change = $ore.price * 0.12
+            $ore.price += change
+        } else {
+            change = $ore.price * 0.1
+            $ore.price -= change
+        }
+        let time = new Date().toLocaleTimeString()
+        $ore.priceHistory = [...$ore.priceHistory, $ore.price]
+        addData(chart, time, $ore.price)
     }
 
     let oreAmountBuy = 1
@@ -180,57 +138,51 @@
      * @param {number} oreAmount
      */
     function sellOre(oreAmount) {
-        playerStore.update((player) => {
-            player.monie += (orePrice * oreAmount)
-            player.ore -= oreAmount
-            return player
-        })
-        if (settings.sounds) {
+        $player.ore -= oreAmount
+        $player.monie += ($ore.price * oreAmount)
+        if ($settings.sounds) {
             chaChings(oreAmount)
         }
-        addMessage('Sold ' + oreAmount + ' ore at ₥' + stuffFormatter.format(orePrice) + ' for a total of ₥' + stuffFormatter.format((oreAmount*orePrice)))
+        addMessage('Sold ' + oreAmount + ' ore at ₥' + stuffFormatter.format($ore.price) + ' for a total of ₥' + stuffFormatter.format((oreAmount*$ore.price)))
     }
 
     /**
      * @param {number} oreAmount
      */
      function buyOre(oreAmount) {
-        playerStore.update((player) => {
-            player.monie -= (orePrice * oreAmount)
-            player.ore += oreAmount
-            return player
-        })
-        if (settings.sounds) {
+        $player.monie -= ($ore.price * oreAmount)
+        $player.ore += oreAmount
+        if ($settings.sounds) {
             chaChings(oreAmount)
         }
-        addMessage('Bought ' + oreAmount + ' ore at ₥' + stuffFormatter.format(orePrice) + ' for a total of ₥' + stuffFormatter.format((oreAmount*orePrice)))
+        addMessage('Bought ' + oreAmount + ' ore at ₥' + stuffFormatter.format($ore.price) + ' for a total of ₥' + stuffFormatter.format((oreAmount*$ore.price)))
     }
 </script>
 
 <div class="container px-4">
     <p class="font-bold text-3xl">Welcome to the Ore Dump</p>
     <p>Sell ore to get monie</p>
-    <p>Ore is selling for <span class="font-bold text-1xl">₥{stuffFormatter.format(orePrice)}</span> monies</p>
+    <p>Ore is selling for <span class="font-bold text-1xl">₥{stuffFormatter.format($ore.price)}</span> monies</p>
     <p>
-        You have <span class="font-bold text-1xl">{stuffFormatter.format(player.ore)}</span> ore
-        {#if player.ore >=1 }
-            worth <span class="font-bold text-1xl">₥{stuffFormatter.format(player.ore*orePrice)}</span>
+        You have <span class="font-bold text-1xl">{stuffFormatter.format($player.ore)}</span> ore
+        {#if $player.ore >=1 }
+            worth <span class="font-bold text-1xl">₥{stuffFormatter.format($player.ore*$ore.price)}</span>
         {/if}
     </p>
-    <p>You have ₥{stuffFormatter.format(player.monie)} monies</p>
+    <p>You have ₥{stuffFormatter.format($player.monie)} monies</p>
 
     <div class="grid grid-cols-2 px-4">
-        {#if player.ore > 0}
+        {#if $player.ore > 0}
             <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellOre(1)}>sell one!</button>
         {:else}
             <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellOre(1)} disabled>sell one!</button>
         {/if}
-        {#if player.ore >= 10}
+        {#if $player.ore >= 10}
             <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellOre(10)}>sell ten!</button>
         {:else}
             <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellOre(10)} disabled>sell ten!</button>
         {/if}
-        {#if player.ore >= oreAmountSell && oreAmountSell != 0}
+        {#if $player.ore >= oreAmountSell && oreAmountSell != 0}
             <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={oreAmountSell} />
             <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg" on:click={() => sellOre(oreAmountSell)}>
                 sell {stuffFormatter.format(oreAmountSell)}!
@@ -241,25 +193,25 @@
                 sell {stuffFormatter.format(oreAmountSell)}!
             </button>
         {/if}
-        {#if player.ore > 1}
-            <button class="bg-red-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellOre(player.ore)}>sell all!</button>
+        {#if $player.ore > 1}
+            <button class="bg-red-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellOre($player.ore)}>sell all!</button>
         {:else}
-            <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellOre(player.ore)} disabled>sell all!</button>
+            <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellOre($player.ore)} disabled>sell all!</button>
         {/if}
     </div>
     <canvas id='chart' class=""></canvas>
     <div class="grid grid-cols-2 px-4">
-        {#if player.monie > orePrice}
+        {#if $player.monie > $ore.price}
             <button class="bg-green-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyOre(1)}>buy one!</button>
         {:else}
             <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(1)} disabled>buy one!</button>
         {/if}
-        {#if player.monie > (orePrice * 10)}
+        {#if $player.monie > ($ore.price * 10)}
             <button class="bg-green-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyOre(10)}>buy ten!</button>
         {:else}
             <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(10)} disabled>buy ten!</button>
         {/if}
-        {#if player.monie > (orePrice * oreAmountBuy) && oreAmountBuy != 0}
+        {#if $player.monie > ($ore.price * oreAmountBuy) && oreAmountBuy != 0}
             <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={oreAmountBuy} />
             <button class="bg-green-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyOre(oreAmountBuy)}>
                 buy {stuffFormatter.format(oreAmountBuy)}!
@@ -270,10 +222,10 @@
                 buy {stuffFormatter.format(oreAmountBuy)}!
             </button>
         {/if}
-        {#if player.monie > ((player.monie / orePrice)+1)}
-            <button class="bg-green-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyOre(Math.round((player.monie / orePrice)))}>buy {Math.round((player.monie / orePrice))}!</button>
+        {#if $player.monie > (($player.monie / $ore.price)+1)}
+            <button class="bg-green-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyOre(Math.round(($player.monie / $ore.price)))}>buy {Math.round(($player.monie / $ore.price))}!</button>
         {:else}
-            <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(Math.round((player.monie / orePrice)))} disabled>buy {Math.round((player.monie / orePrice))}!</button>
+            <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyOre(Math.round(($player.monie / $ore.price)))} disabled>buy {Math.round(($player.monie / $ore.price))}!</button>
         {/if}
     </div>
 </div>

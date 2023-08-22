@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export const settingsStore = writable(
+export const settings = writable(
     {
         sounds: true,
         music: true,

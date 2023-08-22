@@ -1,14 +1,6 @@
 <script>
-    import { messageStore } from '$lib/stores/message';
-    import { playerStore } from '$lib/stores/player';
-
-    /**
-     * @type {{ ore: number; monie: number; pick_upgrades: number; level: number;}}
-     */
-    let player
-    playerStore.subscribe((value) => {
-        player = value
-    })
+    import { messages } from '$lib/stores/message';
+    import { player } from '$lib/stores/player';
 
     let playerBase64 = ''
     /**
@@ -36,10 +28,7 @@
     }
 
     function loadPlayerState() {
-        playerStore.update((player) => {
-            player = playerObj
-            return player
-        })
+        $player = playerObj
         addMessage('Player state loaded')
     }
 
@@ -51,9 +40,7 @@
             time: new Date().toLocaleTimeString(),
             content: content
         }
-        messageStore.update((/** @type {any} */ messages) => {
-            return [message, ...messages]
-        })
+        $messages = [message, ...$messages]
     }
 </script>
 

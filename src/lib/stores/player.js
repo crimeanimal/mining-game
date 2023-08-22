@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export const playerStore = writable(
+export const player = writable(
     {
         level: 1,
         damage: 1,

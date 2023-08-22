@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export const messageStore = writable([{
+export const messages = writable([{
     time: new Date().toLocaleTimeString(),
     content: 'Welcome to the mines!!!'
 }]);

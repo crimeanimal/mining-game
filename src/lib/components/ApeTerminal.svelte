@@ -1,13 +1,13 @@
 <script>
     import {onMount} from 'svelte';
     // @ts-ignore
-    import { apePriceHistoryStore, apePriceStore } from '$lib/stores/ape';
-    import { walletStore } from '$lib/stores/wallet';
-    import { playerStore } from '$lib/stores/player';
+    import { ape } from '$lib/stores/ape';
+    import { wallet } from '$lib/stores/wallet';
+    import { player } from '$lib/stores/player';
     import Chart from 'chart.js/auto';
     import { Colors } from 'chart.js';
     // @ts-ignore
-    import { messageStore } from '$lib/stores/message'
+    import { messages } from '$lib/stores/message'
 
     Chart.register(Colors);
 
@@ -18,38 +18,6 @@
     })
 
     /**
-     * @type {{ connected: boolean; }}
-     */
-    let wallet
-    walletStore.subscribe((value) => {
-        wallet = value
-    })
-
-    /**
-     * @type {{ ore: number; monie: number; pick_upgrades: number; apes: number; }}
-     */
-    let player
-    playerStore.subscribe((value) => {
-        player = value
-    })
-
-    /**
-    * @type {number[]} 
-    */
-    let apePriceHistory=[]
-    apePriceHistoryStore.subscribe((/** @type {number[]} */ value) => {
-		apePriceHistory = value;
-	});
-
-    /**
-     * @type {number}
-     */
-    let apePrice
-    apePriceStore.subscribe((/** @type {number} */ value) => {
-		apePrice = value;
-	});
-
-    /**
      * @param {any} content
      */
     function addMessage(content) {
@@ -57,9 +25,7 @@
             time: new Date().toLocaleTimeString(),
             content: content
         }
-        messageStore.update((/** @type {any} */ messages) => {
-            return [message, ...messages]
-        })
+        $messages = [message, ...$messages]
     }
 
     /**
@@ -123,50 +89,41 @@
     }
 
     function changePrice() {
-        apePriceStore.update((/** @type {number} */ apePrice) => {
             let change
             if (Math.random() > 0.99999) {
-                if (player.apes > 0) {
-                    playerStore.update((currentPlayer) => {
-                        currentPlayer.apes = 0
-                        return currentPlayer
-                    })
+                if ($player.apes > 0) {
+                    $player.apes = 0
                     addMessage('OMG!!! OOH NOOOOOOO!!!! ALLL MY APES GONE!!!!!!!!')
                 } else {
-                    change = apePrice * 0.012
-                    apePrice += change
+                    change = $ape.price * 0.012
+                    $ape.price += change
                     addMessage('Did you just feel something?')
                 }
             } else if (Math.random() > 0.8) {
-                change = apePrice * 0.04
-                apePrice += change
+                change = $ape.price * 0.04
+                $ape.price += change
             } else if (Math.random() > 0.5) {
-                change = apePrice * 0.012
-                apePrice += change
+                change = $ape.price * 0.012
+                $ape.price += change
             } else if (Math.random() > 0.2) {
-                change = apePrice * 0.02
-                apePrice -= change
+                change = $ape.price * 0.02
+                $ape.price -= change
             } else if (Math.random() > 0) {
-                change = apePrice * 0.05
-                apePrice -= change
+                change = $ape.price * 0.05
+                $ape.price -= change
             }
             let time = new Date().toLocaleTimeString()
-            apePriceHistoryStore.update((/** @type {any} */ priceHistory) => [...priceHistory, apePrice])
-            addData(chart, time, apePrice)
-            return apePrice
-        })
+            $ape.priceHistory = [...$ape.priceHistory, $ape.price]
+            addData(chart, time, $ape.price)
     }
 
     /**
      * @param {number} apeAmount
      */
     function sellApe(apeAmount) {
-        playerStore.update((player) => {
-            player.monie += (apePrice * apeAmount)
-            player.apes -= apeAmount
-            return player
-        })
-        addMessage('Sold ' + apeAmount + ' ape at ₥' + stuffFormatter.format(apePrice) + ' for a total of ₥' + stuffFormatter.format((apeAmount*apePrice)))
+        $player.apes -= apeAmount
+        $player.monie += ($ape.price * apeAmount)
+        addMessage('Sold ' + apeAmount + ' ape at ₥' + stuffFormatter.format($ape.price) + ' for a total of ₥' + stuffFormatter.format((apeAmount*$ape.price)))
     }
 
     let apeAmountBuy = 1
@@ -176,35 +133,32 @@
      * @param {number} apeAmount
      */
      function buyApe(apeAmount) {
-        playerStore.update((player) => {
-            player.monie -= (apePrice * apeAmount)
-            player.apes += apeAmount
-            return player
-        })
-        addMessage('Bought ' + apeAmount + ' apes at ₥' + stuffFormatter.format(apePrice) + ' for a total of ₥' + stuffFormatter.format((apeAmount*apePrice)))
+        $player.monie -= ($ape.price * apeAmount)
+        $player.apes += apeAmount
+        addMessage('Bought ' + apeAmount + ' apes at ₥' + stuffFormatter.format($ape.price) + ' for a total of ₥' + stuffFormatter.format((apeAmount*$ape.price)))
     }
 </script>
 
 <div class="container px-4">
     <p class="font-bold text-3xl">Welcome to the APE TERMINAL</p>
     <p>Sell apes to get monie</p>
-    <p>Apes are selling for <span class="font-bold text-1xl">₥{stuffFormatter.format(apePrice)}</span> monies</p>
-    <p>You have <span class="font-bold text-1xl">{stuffFormatter.format(Math.round(player.apes))}</span> ape</p>
-    <p>You have ₥{stuffFormatter.format(player.monie)} monies</p>
+    <p>Apes are selling for <span class="font-bold text-1xl">₥{stuffFormatter.format($ape.price)}</span> monies</p>
+    <p>You have <span class="font-bold text-1xl">{stuffFormatter.format(Math.round($player.apes))}</span> ape</p>
+    <p>You have ₥{stuffFormatter.format($player.monie)} monies</p>
 
-    {#if wallet.connected}
+    {#if $wallet.connected}
         <div class="grid grid-cols-2 px-4">
-            {#if player.apes > 0}
+            {#if $player.apes > 0}
                 <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellApe(1)}>sell one!</button>
             {:else}
                 <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellApe(1)} disabled>sell one!</button>
             {/if}
-            {#if player.apes >= 10}
+            {#if $player.apes >= 10}
                 <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellApe(10)}>sell ten!</button>
             {:else}
                 <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellApe(10)} disabled>sell ten!</button>
             {/if}
-            {#if player.apes >= apeAmountSell && apeAmountSell != 0}
+            {#if $player.apes >= apeAmountSell && apeAmountSell != 0}
                 <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={apeAmountSell} />
                 <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg" on:click={() => sellApe(apeAmountSell)}>
                     sell {apeAmountSell}!
@@ -215,34 +169,34 @@
                     sell {apeAmountSell}!
                 </button>
             {/if}
-            {#if player.apes > 1}
-                <button class="bg-red-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellApe(player.apes)}>sell all!</button>
+            {#if $player.apes > 1}
+                <button class="bg-red-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellApe($player.apes)}>sell all!</button>
             {:else}
-                <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellApe(player.apes)} disabled>sell all!</button>
+                <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellApe($player.apes)} disabled>sell all!</button>
             {/if}
         </div>
     {/if}
     <div>
-        {#if wallet.connected}
+        {#if $wallet.connected}
             <p>ok ty</p>
         {:else}
             <p class="font-bold text-xl">Please connect your wallet to trade apes</p>
         {/if}
     </div>
     <canvas id='chartApe' class=""></canvas>
-    {#if wallet.connected}
+    {#if $wallet.connected}
         <div class="grid grid-cols-2 px-4">
-            {#if player.monie > apePrice}
+            {#if $player.monie > $ape.price}
                 <button class="bg-green-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyApe(1)}>buy one!</button>
             {:else}
                 <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyApe(1)} disabled>buy one!</button>
             {/if}
-            {#if player.monie > (apePrice * 10)}
+            {#if $player.monie > ($ape.price * 10)}
                 <button class=" bg-green-700h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyApe(10)}>buy ten!</button>
             {:else}
                 <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyApe(10)} disabled>buy ten!</button>
             {/if}
-            {#if player.monie > (apePrice * apeAmountBuy) && apeAmountBuy != 0}
+            {#if $player.monie > ($ape.price * apeAmountBuy) && apeAmountBuy != 0}
                 <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={apeAmountBuy} />
                 <button class="bg-green-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyApe(apeAmountBuy)}>
                     buy {apeAmountBuy}!
@@ -253,10 +207,10 @@
                     buy {apeAmountBuy}!
                 </button>
             {/if}
-            {#if player.monie > ((player.monie / apePrice)+1)}
-                <button class="bg-green-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyApe(Math.round((player.monie / apePrice)))}>buy {Math.round((player.monie / apePrice))}!</button>
+            {#if $player.monie > (($player.monie / $ape.price)+1)}
+                <button class="bg-green-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyApe(Math.round(($player.monie / $ape.price)))}>buy {Math.round(($player.monie / $ape.price))}!</button>
             {:else}
-                <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyApe(Math.round((player.monie / apePrice)))} disabled>buy {Math.round((player.monie / apePrice))}!</button>
+                <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyApe(Math.round(($player.monie / $ape.price)))} disabled>buy {Math.round(($player.monie / $ape.price))}!</button>
             {/if}
         </div>
     {/if}
