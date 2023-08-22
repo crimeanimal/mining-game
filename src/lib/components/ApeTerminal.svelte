@@ -2,6 +2,7 @@
     import {onMount} from 'svelte';
     // @ts-ignore
     import { apePriceHistoryStore, apePriceStore } from '$lib/stores/ape';
+    import { walletStore } from '$lib/stores/wallet';
     import { playerStore } from '$lib/stores/player';
     import Chart from 'chart.js/auto';
     import { Colors } from 'chart.js';
@@ -14,6 +15,14 @@
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
         notation: 'compact'
+    })
+
+    /**
+     * @type {{ connected: boolean; }}
+     */
+    let wallet
+    walletStore.subscribe((value) => {
+        wallet = value
     })
 
     /**
@@ -39,11 +48,6 @@
     apePriceStore.subscribe((/** @type {number} */ value) => {
 		apePrice = value;
 	});
-
-    let walletConnected = false
-    function connectWallet() {
-        walletConnected = true
-    }
 
     /**
      * @param {any} content
@@ -123,9 +127,9 @@
             let change
             if (Math.random() > 0.99999) {
                 if (player.apes > 0) {
-                    playerStore.update((player) => {
-                        player.apes = 0
-                        return player
+                    playerStore.update((currentPlayer) => {
+                        currentPlayer.apes = 0
+                        return currentPlayer
                     })
                     addMessage('OMG!!! OOH NOOOOOOO!!!! ALLL MY APES GONE!!!!!!!!')
                 } else {
@@ -188,68 +192,72 @@
     <p>You have <span class="font-bold text-1xl">{stuffFormatter.format(Math.round(player.apes))}</span> ape</p>
     <p>You have ₥{stuffFormatter.format(player.monie)} monies</p>
 
-    <div class="grid grid-cols-2 px-4">
-        {#if player.apes > 0}
-            <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellApe(1)}>sell one!</button>
-        {:else}
-            <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellApe(1)} disabled>sell one!</button>
-        {/if}
-        {#if player.apes >= 10}
-            <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellApe(10)}>sell ten!</button>
-        {:else}
-            <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellApe(10)} disabled>sell ten!</button>
-        {/if}
-        {#if player.apes >= apeAmountSell && apeAmountSell != 0}
-            <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={apeAmountSell} />
-            <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg" on:click={() => sellApe(apeAmountSell)}>
-                sell {apeAmountSell}!
-            </button>
-        {:else}
-            <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={apeAmountSell} />
-            <button class=" h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" disabled on:click={() => sellApe(apeAmountSell)}>
-                sell {apeAmountSell}!
-            </button>
-        {/if}
-        {#if player.apes > 1}
-            <button class="bg-red-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellApe(player.apes)}>sell all!</button>
-        {:else}
-            <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellApe(player.apes)} disabled>sell all!</button>
-        {/if}
-    </div>
+    {#if wallet.connected}
+        <div class="grid grid-cols-2 px-4">
+            {#if player.apes > 0}
+                <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellApe(1)}>sell one!</button>
+            {:else}
+                <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellApe(1)} disabled>sell one!</button>
+            {/if}
+            {#if player.apes >= 10}
+                <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellApe(10)}>sell ten!</button>
+            {:else}
+                <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellApe(10)} disabled>sell ten!</button>
+            {/if}
+            {#if player.apes >= apeAmountSell && apeAmountSell != 0}
+                <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={apeAmountSell} />
+                <button class="bg-red-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg" on:click={() => sellApe(apeAmountSell)}>
+                    sell {apeAmountSell}!
+                </button>
+            {:else}
+                <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={apeAmountSell} />
+                <button class=" h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" disabled on:click={() => sellApe(apeAmountSell)}>
+                    sell {apeAmountSell}!
+                </button>
+            {/if}
+            {#if player.apes > 1}
+                <button class="bg-red-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => sellApe(player.apes)}>sell all!</button>
+            {:else}
+                <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => sellApe(player.apes)} disabled>sell all!</button>
+            {/if}
+        </div>
+    {/if}
     <div>
-        {#if walletConnected}
+        {#if wallet.connected}
             <p>ok ty</p>
         {:else}
-            <button class="bg-gray-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={connectWallet}>Connect Wallet</button>
+            <p class="font-bold text-xl">Please connect your wallet to trade apes</p>
         {/if}
     </div>
     <canvas id='chartApe' class=""></canvas>
-    <div class="grid grid-cols-2 px-4">
-        {#if player.monie > apePrice}
-            <button class="bg-green-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyApe(1)}>buy one!</button>
-        {:else}
-            <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyApe(1)} disabled>buy one!</button>
-        {/if}
-        {#if player.monie > (apePrice * 10)}
-            <button class=" bg-green-700h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyApe(10)}>buy ten!</button>
-        {:else}
-            <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyApe(10)} disabled>buy ten!</button>
-        {/if}
-        {#if player.monie > (apePrice * apeAmountBuy) && apeAmountBuy != 0}
-            <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={apeAmountBuy} />
-            <button class="bg-green-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyApe(apeAmountBuy)}>
-                buy {apeAmountBuy}!
-            </button>
-        {:else}
-            <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={apeAmountBuy} />
-            <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" disabled on:click={() => buyApe(apeAmountBuy)}>
-                buy {apeAmountBuy}!
-            </button>
-        {/if}
-        {#if player.monie > ((player.monie / apePrice)+1)}
-            <button class="bg-green-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyApe(Math.round((player.monie / apePrice)))}>buy {Math.round((player.monie / apePrice))}!</button>
-        {:else}
-            <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyApe(Math.round((player.monie / apePrice)))} disabled>buy {Math.round((player.monie / apePrice))}!</button>
-        {/if}
-    </div>
+    {#if wallet.connected}
+        <div class="grid grid-cols-2 px-4">
+            {#if player.monie > apePrice}
+                <button class="bg-green-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyApe(1)}>buy one!</button>
+            {:else}
+                <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyApe(1)} disabled>buy one!</button>
+            {/if}
+            {#if player.monie > (apePrice * 10)}
+                <button class=" bg-green-700h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyApe(10)}>buy ten!</button>
+            {:else}
+                <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyApe(10)} disabled>buy ten!</button>
+            {/if}
+            {#if player.monie > (apePrice * apeAmountBuy) && apeAmountBuy != 0}
+                <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={apeAmountBuy} />
+                <button class="bg-green-700 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyApe(apeAmountBuy)}>
+                    buy {apeAmountBuy}!
+                </button>
+            {:else}
+                <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={apeAmountBuy} />
+                <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" disabled on:click={() => buyApe(apeAmountBuy)}>
+                    buy {apeAmountBuy}!
+                </button>
+            {/if}
+            {#if player.monie > ((player.monie / apePrice)+1)}
+                <button class="bg-green-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyApe(Math.round((player.monie / apePrice)))}>buy {Math.round((player.monie / apePrice))}!</button>
+            {:else}
+                <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyApe(Math.round((player.monie / apePrice)))} disabled>buy {Math.round((player.monie / apePrice))}!</button>
+            {/if}
+        </div>
+    {/if}
 </div>
