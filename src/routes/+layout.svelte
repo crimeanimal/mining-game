@@ -48,7 +48,7 @@
 </script>
 
 
-<nav class="flex justify-end w-full space-x-4">
+<nav class="flex justify-end w-full space-x-2 px-4">
     <button on:click={toggleSound} class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800">
         {#if settings.sounds}
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
