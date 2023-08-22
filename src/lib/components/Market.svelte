@@ -209,7 +209,12 @@
     <p class="font-bold text-3xl">Welcome to the Ore Dump</p>
     <p>Sell ore to get monie</p>
     <p>Ore is selling for <span class="font-bold text-1xl">₥{stuffFormatter.format(orePrice)}</span> monies</p>
-    <p>You have <span class="font-bold text-1xl">{stuffFormatter.format(player.ore)}</span> ore</p>
+    <p>
+        You have <span class="font-bold text-1xl">{stuffFormatter.format(player.ore)}</span> ore
+        {#if player.ore >=1 }
+            worth <span class="font-bold text-1xl">₥{stuffFormatter.format(player.ore*orePrice)}</span>
+        {/if}
+    </p>
     <p>You have ₥{stuffFormatter.format(player.monie)} monies</p>
 
     <div class="grid grid-cols-2 px-4">
