@@ -23,58 +23,63 @@
 	});
 
     /**
-     * @param {number} id
+     * @param {any} id
+     * @param {number} quantity
      */
-    function buy(id) {
+    function buy(id, quantity) {
         let item = inventory.find(item => item.id === id);
-        if (item.id === 1) {
-            playerStore.update((player) => {
-                player.pick_upgrades += 1
-                player.monie -= item.price
-                return player
-            })
-            inventoryStore.update((inv) => {
-                let itemIndex = inv.findIndex(item => item.id === id);
-                inv[itemIndex].price += (inv[itemIndex].price * 0.03)
-                return inv
-            })
+
+        switch (item.id) {
+            case 1:
+                playerStore.update((player) => {
+                    player.pick_upgrades += quantity
+                    player.monie -= (item.price * quantity)
+                    return player
+                })
+                updatePrice(id, quantity)
+                break;
+            case 2:
+                playerStore.update((player) => {
+                    player.drills += quantity
+                    player.monie -= (item.price * quantity)
+                    return player
+                })
+                updatePrice(id, quantity)
+                break;
+
+            case 3:
+                playerStore.update((player) => {
+                    player.damage += quantity
+                    player.monie -= (item.price * quantity)
+                    return player
+                })
+                updatePrice(id, quantity)
+                break;
+
+            case 4:
+                playerStore.update((player) => {
+                    player.drill_damage += quantity
+                    player.monie -= (item.price * quantity)
+                    return player
+                })
+                updatePrice(id, quantity)
+                break;
+        
+            default:
+                break;
         }
-        if (item.id === 2) {
-            playerStore.update((player) => {
-                player.drills += 1
-                player.monie -= item.price
-                return player
-            })
-            inventoryStore.update((inv) => {
-                let itemIndex = inv.findIndex(item => item.id === id);
-                inv[itemIndex].price += (inv[itemIndex].price * 0.03)
-                return inv
-            })
-        }
-        if (item.id === 3) {
-            playerStore.update((player) => {
-                player.damage += 1
-                player.monie -= item.price
-                return player
-            })
-            inventoryStore.update((inv) => {
-                let itemIndex = inv.findIndex(item => item.id === id);
-                inv[itemIndex].price += (inv[itemIndex].price * 0.03)
-                return inv
-            })
-        }
-        if (item.id === 4) {
-            playerStore.update((player) => {
-                player.drill_damage += 1
-                player.monie -= item.price
-                return player
-            })
-            inventoryStore.update((inv) => {
-                let itemIndex = inv.findIndex(item => item.id === id);
-                inv[itemIndex].price += (inv[itemIndex].price * 0.03)
-                return inv
-            })
-        }
+    }
+
+    /**
+     * @param {number} id
+     * @param {number} quantity
+     */
+    function updatePrice(id, quantity) {
+        inventoryStore.update((inv) => {
+            let itemIndex = inv.findIndex(item => item.id === id);
+            inv[itemIndex].price += ((inv[itemIndex].price * 0.03)*quantity)
+            return inv
+        })
     }
 </script>
 
@@ -91,11 +96,28 @@
                     <p class="font-bold">{item.name}</p>
                     <p>{item.description}</p>
                     <p>{'₥'+stuffFormatter.format(item.price)}</p>
-                    {#if item.price > player.monie}
-                        <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buy(item.id)} disabled>buy</button>
-                    {:else}
-                        <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buy(item.id)}>buy</button>
-                    {/if}
+                    <div class="grid grid-cols-2">
+                        {#if item.price > player.monie}
+                            <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buy(item.id, 1)} disabled>buy 1</button>
+                        {:else}
+                            <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buy(item.id, 1)}>buy 1</button>
+                        {/if}
+                        {#if (item.price*10) > player.monie}
+                            <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buy(item.id, 10)} disabled>buy 10</button>
+                        {:else}
+                            <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buy(item.id, 10)}>buy 10</button>
+                        {/if}
+                        {#if (item.price*100) > player.monie}
+                            <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buy(item.id, 100)} disabled>buy 100</button>
+                        {:else}
+                            <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buy(item.id, 100)}>buy 100</button>
+                        {/if}
+                        {#if (item.price*1000) > player.monie}
+                            <button class="h-10 px-3 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buy(item.id, 1000)} disabled>buy 1000</button>
+                        {:else}
+                            <button class="h-10 px-3 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buy(item.id, 1000)}>buy 1000</button>
+                        {/if}
+                    </div>
                 </div>
             {/if}
         {/each}
