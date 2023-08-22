@@ -16,6 +16,7 @@
     import broke from '$lib/images/broke.gif'
 
     let bayc = [bayc1,bayc2,bayc3,bayc4,bayc5]
+    let profilePic = bayc[Math.floor(Math.random() * bayc.length)]
 
     function connectWallet() {
         walletStore.update((wallet) => {
@@ -165,7 +166,7 @@
             <div>
                 {#if wallet.connected}
                     <div class="flex gap-3 pt-2">
-                        <img class='h-10 w-10 rounded-full ring-2 ring-gray-100' src={player.apes > 0 ? bayc[Math.floor(Math.random() * bayc.length)] : broke} alt="">
+                        <img class='h-10 w-10 rounded-full ring-2 ring-gray-100' src={player.apes > 0 ? profilePic : broke} alt="">
                         <div class="self-center">
                             <p>0xf4rt_buck3t connected</p>
                             <p class="text-xs">{player.apes} ape{#if player.apes != 1 }s{/if}</p>
