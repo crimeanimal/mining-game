@@ -5,6 +5,7 @@
     import { settingsStore } from "$lib/stores/settings";
     import { oreStore } from "$lib/stores/ore";
     import { orePriceHistoryStore } from "$lib/stores/ore";
+    import { apePriceStore, apePriceHistoryStore } from "$lib/stores/ape";
 
     /**
      * @type {{ sounds: boolean, music: boolean }}
@@ -27,6 +28,21 @@
     let orePriceHistory
     orePriceHistoryStore.subscribe((value) => {
 		orePriceHistory = value;
+	});
+
+    /**
+     * @type {number}
+     */
+    let apePrice
+    apePriceStore.subscribe((value) => {
+		apePrice = value;
+	});
+    /**
+     * @type {number[]}
+     */
+    let apePriceHistory
+    apePriceHistoryStore.subscribe((value) => {
+		apePriceHistory = value;
 	});
 
     function toggleSound() {
@@ -62,13 +78,26 @@
     /**
      * @type {number | bigint}
      */
-    let changeSinceStart
-    $: if (orePriceHistory.length > 24) {
-            changeSinceStart = getPercentageChange(orePriceHistory.slice(-24)[0], orePrice)*-1
-            console.log(orePriceHistory.slice(-24)[0], orePrice, changeSinceStart)
+    let oreChange
+    let ticks = 60
+    $: if (orePriceHistory.length > ticks) {
+            oreChange = getPercentageChange([...orePriceHistory].slice(-ticks)[0], orePrice)*-1
+            console.log([...orePriceHistory].slice(-ticks)[0], orePrice, oreChange)
         } else {
-            changeSinceStart = getPercentageChange(orePriceHistory[0], orePrice)*-1
-            console.log(orePriceHistory[0], orePrice, changeSinceStart)
+            oreChange = getPercentageChange(orePriceHistory[0], orePrice)*-1
+            console.log(orePriceHistory[0], orePrice, oreChange)
+        }
+
+    /**
+     * @type {number | bigint}
+     */
+    let apeChange
+    $: if (apePriceHistory.length > ticks) {
+            apeChange = getPercentageChange([...apePriceHistory].slice(-(ticks))[0], apePrice)*-1
+            console.log([...apePriceHistory].slice(-(ticks))[0], apePrice, apeChange)
+        } else {
+            apeChange = getPercentageChange(apePriceHistory[0], apePrice)*-1
+            console.log(apePriceHistory[0], apePrice, apeChange)
         }
 
     /**
@@ -94,8 +123,9 @@
 
 
 <div class="dark:text-gray-100 grid grid-cols-2">
-    <div>
-        <p class="font-bold px-4 text-3xl">Ore: ₥{stuffFormatter.format(orePrice)} <span class={changeSinceStart > 0 ? 'text-green-400' : changeSinceStart == 0 ? '' : 'text-red-400'}>{stuffFormatter.format(changeSinceStart)}%</span></p>
+    <div class="flex justify-start content-end">
+        <p class="font-bold leading-relaxed px-4 text-3xl">Ore: ₥{stuffFormatter.format(orePrice)} <span class={oreChange > 0 ? 'text-green-400' : oreChange == 0 ? '' : 'text-red-400'}>{#if oreChange > 0}+{/if}{stuffFormatter.format(oreChange)}%</span></p>
+        <p class="font-bold leading-relaxed px-4 text-3xl">Apes: ₥{stuffFormatter.format(apePrice)} <span class={apeChange > 0 ? 'text-green-400' : apeChange == 0 ? '' : 'text-red-400'}>{#if apeChange > 0}+{/if}{stuffFormatter.format(apeChange)}%</span></p>
     </div>
     <div>
         <nav class="flex justify-end space-x-2 px-4">
