@@ -244,7 +244,7 @@
                 buy {apeAmountBuy}!
             </button>
         {/if}
-        {#if player.monie > ((player.monie / apePrice)-1)}
+        {#if player.monie > ((player.monie / apePrice)+1)}
             <button class="bg-green-700 col-span-2 h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => buyApe(Math.round((player.monie / apePrice)))}>buy {Math.round((player.monie / apePrice))}!</button>
         {:else}
             <button class="col-span-2 h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buyApe(Math.round((player.monie / apePrice)))} disabled>buy {Math.round((player.monie / apePrice))}!</button>
