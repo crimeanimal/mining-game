@@ -2,6 +2,7 @@ import { writable } from 'svelte/store';
 
 export const settingsStore = writable(
     {
-        sounds: true
+        sounds: true,
+        music: true,
     }
 );
