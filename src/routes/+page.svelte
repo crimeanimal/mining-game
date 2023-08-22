@@ -3,8 +3,8 @@
     import Messages from '$lib/components/Messages.svelte';
     import Mine from '$lib/components/Mine.svelte';
     import Save from '$lib/components/Save.svelte';
-    import Sell from '$lib/components/Sell.svelte';
     import Store from '$lib/components/Store.svelte';
+    import Market from '$lib/components/Market.svelte';
 </script>
 
 <svelte:head>
@@ -14,7 +14,7 @@
 <div style="height: 100vh;" class="dark:text-gray-100 w-full h-full mx-0">
     <div style="height: 100vh;" class="container mx-auto grid md:grid-cols-2 xl:grid-cols-3">
         <Mine />
-        <Sell />
+        <Market />
         <Store />
         <ApeTerminal />
         <Save />
