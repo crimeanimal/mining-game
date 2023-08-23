@@ -120,8 +120,13 @@
             }
         }
         if (($player.ore - $player.dogs.amount) > 0) {
-            $player.ore -= ($player.dogs.amount * (Math.pow($player.dogs.treats,2)))
-            $player.monie += $player.dogs.amount*$ore.price
+            if ($player.dogs.treats == 0) {
+                $player.ore -= $player.dogs.amount
+                $player.monie += $player.dogs.amount*$ore.price
+            } else if ($player.dogs.treats > 0) {
+                $player.ore -= $player.dogs.amount * (Math.pow($player.dogs.treats,2))
+                $player.monie += ($player.dogs.amount * (Math.pow($player.dogs.treats,2)))*$ore.price
+            }
         }
     }
 
