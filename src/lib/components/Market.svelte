@@ -131,7 +131,7 @@
         if ($settings.sounds) {
             chaChings(oreAmount)
         }
-        messages.newMessage('Sold ' + oreAmount + ' ore at ₥' + stuffFormatter.format($ore.price) + ' for a total of ₥' + stuffFormatter.format((oreAmount*$ore.price)))
+        messages.newMessage('ORE', 'Sold ' + oreAmount + ' ore at ₥' + stuffFormatter.format($ore.price) + ' for a total of ₥' + stuffFormatter.format((oreAmount*$ore.price)))
     }
 
     /**
@@ -143,7 +143,7 @@
         if ($settings.sounds) {
             chaChings(oreAmount)
         }
-        messages.newMessage('Bought ' + oreAmount + ' ore at ₥' + stuffFormatter.format($ore.price) + ' for a total of ₥' + stuffFormatter.format((oreAmount*$ore.price)))
+        messages.newMessage('ORE', 'Bought ' + oreAmount + ' ore at ₥' + stuffFormatter.format($ore.price) + ' for a total of ₥' + stuffFormatter.format((oreAmount*$ore.price)))
     }
 
     let buttonClassBase = 'h-10 px-5 m-2 transition-colors duration-150 bg-gray-700 rounded-lg'
