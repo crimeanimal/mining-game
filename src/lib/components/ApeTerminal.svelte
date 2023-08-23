@@ -88,11 +88,11 @@
             if (Math.random() > 0.99999) {
                 if ($player.apes > 0) {
                     $player.apes = 0
-                    messages.newMessage('OMG!!! OOH NOOOOOOO!!!! ALLL MY APES GONE!!!!!!!!')
+                    messages.newMessage('APES', 'OMG!!! OOH NOOOOOOO!!!! ALLL MY APES GONE!!!!!!!!')
                 } else {
                     change = $ape.price * 0.012
                     $ape.price += change
-                    messages.newMessage('Did you just feel something?')
+                    messages.newMessage('APES', 'Did you just feel something?')
                 }
             } else if (Math.random() > 0.8) {
                 change = $ape.price * 0.04
@@ -114,6 +114,10 @@
 
     function dogSell() {
         if (($player.ore - $player.dogs.amount) > 0) {
+            if (Math.random() > 0.99) {
+                $player.dogs.amount - 1
+                messages.newMessage('DOGS', 'Fuck. One of your ore selling dogs jsut had a massive corinary on the trading floor, you\'re pushing them too hard!!')
+            }
             $player.ore -= ($player.dogs.amount * (Math.pow($player.dogs.treats,2)))
             $player.monie += $player.dogs.amount*$ore.price
         }
@@ -125,7 +129,7 @@
     function sellApe(apeAmount) {
         $player.apes -= apeAmount
         $player.monie += ($ape.price * apeAmount)
-        messages.newMessage('Sold ' + apeAmount + ' ape at ₥' + stuffFormatter.format($ape.price) + ' for a total of ₥' + stuffFormatter.format((apeAmount*$ape.price)))
+        messages.newMessage('APES', 'Sold ' + apeAmount + ' ape at ₥' + stuffFormatter.format($ape.price) + ' for a total of ₥' + stuffFormatter.format((apeAmount*$ape.price)))
     }
 
     let apeAmountBuy = 1
@@ -137,7 +141,7 @@
      function buyApe(apeAmount) {
         $player.monie -= ($ape.price * apeAmount)
         $player.apes += apeAmount
-        messages.newMessage('Bought ' + apeAmount + ' apes at ₥' + stuffFormatter.format($ape.price) + ' for a total of ₥' + stuffFormatter.format((apeAmount*$ape.price)))
+        messages.newMessage('APES', 'Bought ' + apeAmount + ' apes at ₥' + stuffFormatter.format($ape.price) + ' for a total of ₥' + stuffFormatter.format((apeAmount*$ape.price)))
     }
 </script>
 
