@@ -149,7 +149,7 @@
     let buttonClassBase = 'h-10 px-5 m-2 transition-colors duration-150 bg-gray-700 rounded-lg'
     let disabledButtonClass = buttonClassBase + " text-gray-300 cursor-not-allowed"
     let sellButtonClass = buttonClassBase + " bg-red-700 text-gray-100 focus:shadow-outline hover:bg-gray-800"
-    let buyButtonClass = buttonClassBase + " bg-green-700 col-span-2 text-gray-100 focus:shadow-outline hover:bg-gray-800"
+    let buyButtonClass = buttonClassBase + " bg-green-700 text-gray-100 focus:shadow-outline hover:bg-gray-800"
 </script>
 
 <div class="container px-4">
