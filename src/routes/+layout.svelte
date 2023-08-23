@@ -2,6 +2,8 @@
     import "../app.css";
     import {onMount} from 'svelte';
     import fast_car from '$lib/music/fast_car.mp3'
+    import human from '$lib/music/human.mp3'
+    import virtual_insanity from '$lib/music/virtual_insanity.mp3'
     import { settings } from "$lib/stores/settings";
     import { ore } from "$lib/stores/ore";
     import { ape } from "$lib/stores/ape";
@@ -16,6 +18,7 @@
 
     let bayc = [bayc1,bayc2,bayc3,bayc4,bayc5]
     let profilePic = bayc[Math.floor(Math.random() * bayc.length)]
+    let songs = [fast_car,human,virtual_insanity]
 
     function connectWallet() {
         $wallet.connected = true
@@ -69,22 +72,31 @@
     /**
      * @type {HTMLAudioElement}
      */
-    let fastCarAudio
+    let musicAudio
 
-    $: if ($settings.music && fastCarAudio != undefined) {
-        fastCarAudio.play();
-    } else if ($settings.music == false && fastCarAudio != undefined) {
-        fastCarAudio.pause();
+    $: if ($settings.music && musicAudio != undefined) {
+        musicAudio.play();
+    } else if ($settings.music == false && musicAudio != undefined) {
+        musicAudio.pause();
+    }
+
+    function playNewSong() {
+        if ($settings.music) {
+            musicAudio = new Audio(songs[Math.floor(Math.random() * songs.length)])
+            musicAudio.volume = 0.2
+            musicAudio.play();
+        }
     }
 
     onMount(() => {
-        if ($settings.music) {
-            fastCarAudio = new Audio(fast_car)
-            fastCarAudio.volume = 0.2
-            fastCarAudio.loop = true
-            fastCarAudio.play();
-        }
+        playNewSong()
     })
+
+    $: if (musicAudio != undefined) {
+        musicAudio.onended = function() {
+            playNewSong()
+        }; 
+    }
 </script>
 
 
