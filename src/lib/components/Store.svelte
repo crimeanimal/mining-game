@@ -1,6 +1,14 @@
 <script>
     import { shop } from '$lib/stores/shop'
     import { player } from '$lib/stores/player';
+    import arm from '$lib/images/shop/arm.jpg'
+    import bits from '$lib/images/shop/diamond_bit.webp'
+    import dog from '$lib/images/shop/dog.webp'
+    import drill from '$lib/images/shop/drill.jpg'
+    import pick from '$lib/images/shop/pick.png'
+    import treats from '$lib/images/shop/treats.webp'
+
+    let images = [pick,drill,arm,bits,dog,treats]
 
     let stuffFormatter = new Intl.NumberFormat("en-US", {
         minimumFractionDigits: 2,
@@ -51,6 +59,12 @@
                 $player.monie -= (item.price * quantity)
                 updatePrice(id, quantity)
                 break;
+
+            case 6:
+                $player.dogs.treats += quantity
+                $player.monie -= (item.price * quantity)
+                updatePrice(id, quantity)
+                break;
         
             default:
                 break;
@@ -76,7 +90,8 @@
     <div class="grid grid-cols-2">
         {#each $shop.inventory as item (item.id)}
             {#if item.unlock <= $player.level}
-                <div>
+                <div class="grid grid-cols-1 container">
+                    <img class="h-36 w-2/3 rounded-lg ring-gray-100 justify-self-center" src={images[item.id-1]} alt="">
                     <p class="font-bold">{item.name}</p>
                     <p>{item.description}</p>
                     <p>{'₥'+stuffFormatter.format(item.price)}</p>

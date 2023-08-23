@@ -15,7 +15,7 @@
     $: console.log(playerBase64)
 
     function playerObjToB64() {
-        playerBase64 = btoa(JSON.stringify(player))
+        playerBase64 = btoa(JSON.stringify($player))
         navigator.clipboard.writeText(playerBase64).then(() => {
             console.log('Content copied to clipboard');
             messages.newMessage('Player state copied to clipboard')

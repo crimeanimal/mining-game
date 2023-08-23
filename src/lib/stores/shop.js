@@ -36,5 +36,12 @@ export const shop = writable({
             description: 'will sell ore for you so you can do other stuff i guess, kinda fucked up to make a little doggie do',
             price: 90000,
             unlock: 30
+        },
+        {
+            id: 6,
+            name: '"performance enhancing dog treats"',
+            description: 'i really don\'t think you should feel good about this. doggies sell 2x as fast',
+            price: 50000,
+            unlock: 40
         }
     ]});

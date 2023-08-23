@@ -114,7 +114,7 @@
 
     function dogSell() {
         if (($player.ore - $player.dogs.amount) > 0) {
-            $player.ore -= $player.dogs.amount
+            $player.ore -= ($player.dogs.amount * (Math.pow($player.dogs.treats,2)))
             $player.monie += $player.dogs.amount*$ore.price
         }
     }

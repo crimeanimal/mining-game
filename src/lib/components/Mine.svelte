@@ -97,7 +97,7 @@
     <p>You have {stuffFormatter.format($player.ore)} ore</p>
     <p>You have {stuffFormatter.format($player.pick_upgrades)} pick upgrades and do {stuffFormatter.format($player.damage + ($player.pick_upgrades * 0.1))} damage per hit</p>
     <p>You have {stuffFormatter.format($player.drills.amount)} drills doing {stuffFormatter.format($player.drills.damage)} damage per tick</p>
-    <p class={ $player.dogs.amount > 0 ? '' : 'invisible'}>You have {stuffFormatter.format($player.dogs.amount)} ore selling dogs selling {stuffFormatter.format($player.dogs.amount)} ore per tick, which is kinda fucked up to make a little doggie do</p>
+    <p class={ $player.dogs.amount > 0 ? '' : 'invisible'}>You have {stuffFormatter.format($player.dogs.amount)} ore selling dogs hopped up on {stuffFormatter.format($player.dogs.treats)} treats, selling {stuffFormatter.format(($player.dogs.amount * (Math.pow($player.dogs.treats,2))))} ore per tick, which is kinda fucked up to make a little doggie do</p>
     <p>Mine rocks to get more ore</p>
 
     <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={mine}>mine!</button>
