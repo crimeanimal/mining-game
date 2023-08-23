@@ -29,7 +29,7 @@
                 updatePrice(id, quantity)
                 break;
             case 2:
-                $player.drills += quantity
+                $player.drills.amount += quantity
                 $player.monie -= (item.price * quantity)
                 updatePrice(id, quantity)
                 break;
@@ -41,13 +41,13 @@
                 break;
 
             case 4:
-                $player.drill_damage += quantity
+                $player.drills.damage += quantity
                 $player.monie -= (item.price * quantity)
                 updatePrice(id, quantity)
                 break;
 
             case 5:
-                $player.dogs += quantity
+                $player.dogs.amount += quantity
                 $player.monie -= (item.price * quantity)
                 updatePrice(id, quantity)
                 break;

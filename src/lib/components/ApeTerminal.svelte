@@ -113,9 +113,9 @@
     }
 
     function dogSell() {
-        if (($player.ore - $player.dogs) > 0) {
-            $player.ore -= $player.dogs
-            $player.monie += $player.dogs*$ore.price
+        if (($player.ore - $player.dogs.amount) > 0) {
+            $player.ore -= $player.dogs.amount
+            $player.monie += $player.dogs.amount*$ore.price
         }
     }
 

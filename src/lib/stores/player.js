@@ -10,8 +10,12 @@ export const player = writable(
         apes: 0,
         monie: 0,
         pick_upgrades: 0,
-        drills: 0,
-        drill_damage: 1,
-        dogs: 0
+        drills: {
+            amount: 0,
+            damage: 0
+        },
+        dogs: {
+            amount: 0
+        }
     }
 );
