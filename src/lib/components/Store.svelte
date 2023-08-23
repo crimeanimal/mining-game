@@ -1,6 +1,7 @@
 <script>
     import { shop } from '$lib/stores/shop'
     import { player } from '$lib/stores/player';
+    import { messages } from '$lib/stores/message';
     import arm from '$lib/images/shop/arm.jpg'
     import bits from '$lib/images/shop/diamond_bit.webp'
     import dog from '$lib/images/shop/dog.webp'
@@ -64,6 +65,7 @@
                 $player.dogs.treats += quantity
                 $player.monie -= (item.price * quantity)
                 updatePrice(id, quantity)
+                messages.newMessage('DOGS', 'Bought ' + quantity + ' dogs at ₥' + stuffFormatter.format(item.price) + ' for a total of ₥' + stuffFormatter.format((item.price * quantity)))
                 break;
         
             default:
