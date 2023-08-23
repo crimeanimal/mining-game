@@ -11,6 +11,7 @@ export const player = writable(
         monie: 0,
         pick_upgrades: 0,
         drills: 0,
-        drill_damage: 1
+        drill_damage: 1,
+        dogs: 0
     }
 );

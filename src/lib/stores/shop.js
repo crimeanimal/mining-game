@@ -29,5 +29,12 @@ export const shop = writable({
             description: 'increase drill base damage',
             price: 750,
             unlock: 5
+        },
+        {
+            id: 5,
+            name: 'ore selling dog',
+            description: 'will sell ore for you so you can do other stuff i guess, kinda fucked up to make a little doggie do',
+            price: 90000,
+            unlock: 30
         }
     ]});

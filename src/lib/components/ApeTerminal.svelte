@@ -6,6 +6,7 @@
     import { player } from '$lib/stores/player';
     import Chart from 'chart.js/auto';
     import { Colors } from 'chart.js';
+    import { ore } from '$lib/stores/ore';
     // @ts-ignore
     import { messages } from '$lib/stores/message'
 
@@ -22,7 +23,7 @@
      */
      let chart
     onMount(() => {
-        const interval = setInterval(changePrice, 1000);
+        const interval = setInterval(intervalFunc, 1000);
         
         const ctx = document.getElementById('chartApe');
         Chart.defaults.backgroundColor = '#d3d3d3';
@@ -77,6 +78,11 @@
         });
     }
 
+    function intervalFunc() {
+        changePrice()
+        dogSell()
+    }
+
     function changePrice() {
             let change
             if (Math.random() > 0.99999) {
@@ -104,6 +110,13 @@
             let time = new Date().toLocaleTimeString()
             $ape.priceHistory = [...$ape.priceHistory, $ape.price]
             addData(chart, time, $ape.price)
+    }
+
+    function dogSell() {
+        if (($player.ore - $player.dogs) > 0) {
+            $player.ore -= $player.dogs
+            $player.monie += $player.dogs*$ore.price
+        }
     }
 
     /**

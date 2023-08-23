@@ -45,6 +45,12 @@
                 $player.monie -= (item.price * quantity)
                 updatePrice(id, quantity)
                 break;
+
+            case 5:
+                $player.dogs += quantity
+                $player.monie -= (item.price * quantity)
+                updatePrice(id, quantity)
+                break;
         
             default:
                 break;
