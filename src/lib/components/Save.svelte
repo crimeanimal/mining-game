@@ -51,9 +51,7 @@
             </button>
         </div>
         {#if playerObj != undefined}
-            {#each Object.keys(playerObj) as key}
-                <p>{key}: {playerObj[key]}</p>
-            {/each}
+            <p>{JSON.stringify(playerObj, null, 2)}</p>
         {/if}
     </div>
 </div>
