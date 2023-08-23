@@ -3,8 +3,8 @@
     import { messages } from '$lib/stores/message';
     import { player } from '$lib/stores/player'
 
-    $: filteredMessages = $messages
     let filterType = 'ALL'
+    $: filteredMessages = changeFilter(filterType)
 
     /**
      * @param {string} type
@@ -12,12 +12,12 @@
     function changeFilter(type) {
         if (type != 'ALL') {
             filterType = type
-            filteredMessages = $messages.filter(obj => {
+            return $messages.filter(obj => {
                 return obj.type === type;
             });
         } else {
             filterType = 'ALL'
-            filteredMessages = $messages
+            return $messages
         }
     }
 </script>

@@ -113,11 +113,13 @@
     }
 
     function dogSell() {
-        if (($player.ore - $player.dogs.amount) > 0) {
+        if ($player.dogs.amount > 0) {
             if (Math.random() > 0.99) {
-                $player.dogs.amount - 1
-                messages.newMessage('DOGS', 'Fuck. One of your ore selling dogs jsut had a massive corinary on the trading floor, you\'re pushing them too hard!!')
+                $player.dogs.amount -= 1
+                messages.newMessage('DOGS', 'Fuck. One of your ore selling dogs just had a massive corinary on the trading floor, you\'re pushing them too hard!!')
             }
+        }
+        if (($player.ore - $player.dogs.amount) > 0) {
             $player.ore -= ($player.dogs.amount * (Math.pow($player.dogs.treats,2)))
             $player.monie += $player.dogs.amount*$ore.price
         }
