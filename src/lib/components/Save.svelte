@@ -18,29 +18,18 @@
         playerBase64 = btoa(JSON.stringify(player))
         navigator.clipboard.writeText(playerBase64).then(() => {
             console.log('Content copied to clipboard');
-            addMessage('Player state copied to clipboard')
+            messages.newMessage('Player state copied to clipboard')
             /* Resolved - text copied to clipboard successfully */
             },() => {
             console.error('Failed to copy');
-            addMessage('Player state failed to save')
+            messages.newMessage('Player state failed to save')
             /* Rejected - text failed to copy to the clipboard */
         });
     }
 
     function loadPlayerState() {
         $player = playerObj
-        addMessage('Player state loaded')
-    }
-
-    /**
-     * @param {any} content
-     */
-    function addMessage(content) {
-        let message = {
-            time: new Date().toLocaleTimeString(),
-            content: content
-        }
-        $messages = [message, ...$messages]
+        messages.newMessage('Player state loaded')
     }
 </script>
 

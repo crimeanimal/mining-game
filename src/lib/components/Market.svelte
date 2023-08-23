@@ -89,18 +89,6 @@
         });
     }
 
-
-    /**
-     * @param {any} content
-     */
-    function addMessage(content) {
-        let message = {
-            time: new Date().toLocaleTimeString(),
-            content: content
-        }
-        $messages = [message, ...$messages]
-    }
-
     function changePrice() {
         let change
         if (Math.random() > 0.5) {
@@ -143,7 +131,7 @@
         if ($settings.sounds) {
             chaChings(oreAmount)
         }
-        addMessage('Sold ' + oreAmount + ' ore at ₥' + stuffFormatter.format($ore.price) + ' for a total of ₥' + stuffFormatter.format((oreAmount*$ore.price)))
+        messages.newMessage('Sold ' + oreAmount + ' ore at ₥' + stuffFormatter.format($ore.price) + ' for a total of ₥' + stuffFormatter.format((oreAmount*$ore.price)))
     }
 
     /**
@@ -155,7 +143,7 @@
         if ($settings.sounds) {
             chaChings(oreAmount)
         }
-        addMessage('Bought ' + oreAmount + ' ore at ₥' + stuffFormatter.format($ore.price) + ' for a total of ₥' + stuffFormatter.format((oreAmount*$ore.price)))
+        messages.newMessage('Bought ' + oreAmount + ' ore at ₥' + stuffFormatter.format($ore.price) + ' for a total of ₥' + stuffFormatter.format((oreAmount*$ore.price)))
     }
 </script>
 

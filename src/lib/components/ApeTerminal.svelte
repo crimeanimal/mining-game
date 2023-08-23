@@ -18,17 +18,6 @@
     })
 
     /**
-     * @param {any} content
-     */
-    function addMessage(content) {
-        let message = {
-            time: new Date().toLocaleTimeString(),
-            content: content
-        }
-        $messages = [message, ...$messages]
-    }
-
-    /**
      * @type {Chart<"line", number[], number>}
      */
      let chart
@@ -93,11 +82,11 @@
             if (Math.random() > 0.99999) {
                 if ($player.apes > 0) {
                     $player.apes = 0
-                    addMessage('OMG!!! OOH NOOOOOOO!!!! ALLL MY APES GONE!!!!!!!!')
+                    messages.newMessage('OMG!!! OOH NOOOOOOO!!!! ALLL MY APES GONE!!!!!!!!')
                 } else {
                     change = $ape.price * 0.012
                     $ape.price += change
-                    addMessage('Did you just feel something?')
+                    messages.newMessage('Did you just feel something?')
                 }
             } else if (Math.random() > 0.8) {
                 change = $ape.price * 0.04
@@ -123,7 +112,7 @@
     function sellApe(apeAmount) {
         $player.apes -= apeAmount
         $player.monie += ($ape.price * apeAmount)
-        addMessage('Sold ' + apeAmount + ' ape at ₥' + stuffFormatter.format($ape.price) + ' for a total of ₥' + stuffFormatter.format((apeAmount*$ape.price)))
+        messages.newMessage('Sold ' + apeAmount + ' ape at ₥' + stuffFormatter.format($ape.price) + ' for a total of ₥' + stuffFormatter.format((apeAmount*$ape.price)))
     }
 
     let apeAmountBuy = 1
@@ -135,7 +124,7 @@
      function buyApe(apeAmount) {
         $player.monie -= ($ape.price * apeAmount)
         $player.apes += apeAmount
-        addMessage('Bought ' + apeAmount + ' apes at ₥' + stuffFormatter.format($ape.price) + ' for a total of ₥' + stuffFormatter.format((apeAmount*$ape.price)))
+        messages.newMessage('Bought ' + apeAmount + ' apes at ₥' + stuffFormatter.format($ape.price) + ' for a total of ₥' + stuffFormatter.format((apeAmount*$ape.price)))
     }
 </script>
 

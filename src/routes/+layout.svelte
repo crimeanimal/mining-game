@@ -52,10 +52,8 @@
     let ticks = 60
     $: if ($ore.priceHistory.length > ticks) {
             oreChange = getPercentageChange([...$ore.priceHistory].slice(-ticks)[0], $ore.price)*-1
-            console.log([...$ore.priceHistory].slice(-ticks)[0], $ore.price, oreChange)
         } else {
             oreChange = getPercentageChange($ore.priceHistory[0], $ore.price)*-1
-            console.log($ore.priceHistory[0], $ore.price, oreChange)
         }
 
     /**
@@ -64,10 +62,8 @@
     let apeChange
     $: if ($ape.priceHistory.length > ticks) {
             apeChange = getPercentageChange([...$ape.priceHistory].slice(-(ticks))[0], $ape.price)*-1
-            console.log([...$ape.priceHistory].slice(-(ticks))[0], $ape.price, apeChange)
         } else {
             apeChange = getPercentageChange($ape.priceHistory[0], $ape.price)*-1
-            console.log($ape.priceHistory[0], $ape.price, apeChange)
         }
 
     /**
