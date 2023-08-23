@@ -119,11 +119,13 @@
                 messages.newMessage('DOGS', 'Fuck. One of your ore selling dogs just had a massive corinary on the trading floor, you\'re pushing them too hard!!')
             }
         }
-        if (($player.ore - $player.dogs.amount) > 0) {
-            if ($player.dogs.treats == 0) {
+        if ($player.dogs.treats == 0) {
+            if ((($player.ore - $player.dogs.amount) > 0)) {
                 $player.ore -= $player.dogs.amount
                 $player.monie += $player.dogs.amount*$ore.price
-            } else if ($player.dogs.treats > 0) {
+            }
+        } else if ($player.dogs.treats > 0) {
+            if ((($player.ore - ($player.dogs.amount * (Math.pow($player.dogs.treats,2)))) > 0)) {
                 $player.ore -= $player.dogs.amount * (Math.pow($player.dogs.treats,2))
                 $player.monie += ($player.dogs.amount * (Math.pow($player.dogs.treats,2)))*$ore.price
             }
