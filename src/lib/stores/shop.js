@@ -43,5 +43,12 @@ export const shop = writable({
             description: 'i really don\'t think you should feel good about this. doggies sell 2x as fast',
             price: 50000,
             unlock: 40
+        },
+        {
+            id: 7,
+            name: 'woder boddle',
+            description: 'jesus christ it took you this long to think of getting them water?? decreases ore selling dog death risk by 0.01%',
+            price: 100000,
+            unlock: 70
         }
     ]});

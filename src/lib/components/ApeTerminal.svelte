@@ -114,7 +114,8 @@
 
     function dogSell() {
         if ($player.dogs.amount > 0 && $player.dogs.treats > 0) {
-            if (Math.random() > 0.999) {
+            let deathChance = 0.999 - ($player.dogs.waters * 0.0001)
+            if (Math.random() > deathChance) {
                 $player.dogs.amount -= 1
                 messages.newMessage('DOGS', 'Fuck. One of your ore selling dogs just had a massive corinary on the trading floor, you\'re pushing them too hard!!')
             }

@@ -16,7 +16,8 @@ export const player = writable(
         },
         dogs: {
             amount: 0,
-            treats: 0
+            treats: 0,
+            waters: 0
         }
     }
 );

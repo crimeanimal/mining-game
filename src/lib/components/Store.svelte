@@ -3,13 +3,14 @@
     import { player } from '$lib/stores/player';
     import { messages } from '$lib/stores/message';
     import arm from '$lib/images/shop/arm.jpg'
+    import bottle from '$lib/images/shop/bottle.webp'
     import bits from '$lib/images/shop/diamond_bit.webp'
     import dog from '$lib/images/shop/dog.webp'
     import drill from '$lib/images/shop/drill.jpg'
     import pick from '$lib/images/shop/pick.png'
     import treats from '$lib/images/shop/treats.webp'
 
-    let images = [pick,drill,arm,bits,dog,treats]
+    let images = [pick,drill,arm,bits,dog,treats,bottle]
 
     let stuffFormatter = new Intl.NumberFormat("en-US", {
         minimumFractionDigits: 2,
@@ -66,6 +67,12 @@
                 $player.monie -= (item.price * quantity)
                 updatePrice(id, quantity)
                 messages.newMessage('DOGS', 'Bought ' + quantity + ' dogs at ₥' + stuffFormatter.format(item.price) + ' for a total of ₥' + stuffFormatter.format((item.price * quantity)))
+                break;
+
+            case 7:
+                $player.dogs.waters += quantity
+                $player.monie -= (item.price * quantity)
+                updatePrice(id, quantity)
                 break;
         
             default:
