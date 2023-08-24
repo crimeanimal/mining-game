@@ -15,6 +15,14 @@ function createStone() {
         subscribe,
         set,
         update,
+        mine: (/** @type {number} */ playerDamage) => update((n) => {
+            n.health -= playerDamage
+            return n
+        }),
+        drill: (/** @type {number} */ damage) => update((n) => {
+            n.health -= damage
+            return n
+        }),
         newStone: () => update((n) => {
             let rocks = ['stone','pebble','boulder','rock','chunk of concrete','shard of glass','brick']
             /**

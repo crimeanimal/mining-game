@@ -34,7 +34,7 @@
 
         switch (item.id) {
             case 1:
-                $player.pick_upgrades += quantity
+                $player.picks.upgrades += quantity
                 $player.monie -= (item.price * quantity)
                 updatePrice(id, quantity)
                 break;
@@ -45,7 +45,7 @@
                 break;
 
             case 3:
-                $player.damage += quantity
+                $player.picks.damage += quantity
                 $player.monie -= (item.price * quantity)
                 updatePrice(id, quantity)
                 break;
