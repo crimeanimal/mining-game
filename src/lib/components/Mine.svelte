@@ -1,8 +1,6 @@
 <script>
     import { player } from "$lib/stores/player";
-    import { generate, count } from "random-words";
     import { stone } from "$lib/stores/stone";
-    import nlp from 'compromise/two'
     import {onMount} from 'svelte';
 
     let stuffFormatter = new Intl.NumberFormat("en-US", {
@@ -25,44 +23,12 @@
     $: if ($stone.health <= 0) {
         $player.ore += $stone.reward
         $player.xp += $stone.reward
-        newRock()
+        stone.newStone()
     }
 
     function bounceASec() {
         bounce = true
         setTimeout(() => bounce = false, 10000)
-    }
-
-    function newRock() {
-        let rocks = ['stone','pebble','boulder','rock','chunk of concrete','shard of glass','brick']
-        /**
-         * @type {{ text: string; }[]}
-         */
-        let adverb = []
-        while (true) {
-            let doc = nlp(generate({ exactly: 500, minLength: 4, join: " " }))
-            adverb = doc.match('#Adverb #Adjective').json()
-            if (adverb.length > 0) {
-                break
-            }
-        }
-        // @ts-ignore
-        let arr = (adverb[0].text + ' ' + rocks[Math.floor(Math.random() * rocks.length)]).split(" ")
-        for (var i = 0; i < arr.length; i++) {
-            // @ts-ignore
-            arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
-        }
-        // let min = 25 * (player.level*0.7)
-        // let max = 50 * (player.level*0.7)
-        let min = $stone.difficulty+=$stone.difficulty*0.01
-        let max = $stone.difficulty+=$stone.difficulty*0.1
-        let difficulty = Math.round(Math.floor(Math.random() * (max - min) + min))
-        $stone = {
-            name: arr.join(' '),
-            health: Math.round(difficulty * (Math.random() * (0.7 - 0.5) + 0.5)),
-            difficulty: difficulty,
-            reward: Math.round(difficulty * (Math.random() * (0.7 - 0.5) + 0.5))
-        }
     }
 
     function levelUp() {
