@@ -113,7 +113,7 @@
     <p>You have {stuffFormatter.format($player.ore)} ore</p>
     <p>You have {stuffFormatter.format($player.pick_upgrades)} pick upgrades and do {stuffFormatter.format($player.damage + ($player.pick_upgrades * 0.1))} damage per hit</p>
     <p>You have {stuffFormatter.format($player.drills.amount)} drills doing {stuffFormatter.format($player.drills.damage)} damage per tick</p>
-    <p class={ hasEverHadDogs ? '' : 'invisible'}>You have {stuffFormatter.format($player.dogs.amount)} ore selling dogs hopped up on {stuffFormatter.format($player.dogs.treats)} treats, selling {dogSellPerTick} ore per tick, which is kinda fucked up to make a little doggie do</p>
+    <p class={ hasEverHadDogs ? '' : 'invisible'}>You have {stuffFormatter.format($player.dogs.amount)} ore selling dogs hopped up on {stuffFormatter.format($player.dogs.treats)} treats, selling {dogSellPerTick} ore per tick, which is kinda fucked up to make a little doggie do, {#if $player.dogs.waters} but at least you've given them {stuffFormatter.format($player.dogs.waters)} waters{/if}</p>
     {#if hasEverHadDogs && $player.dogs.amount === 0}
         <p class="font-bold text-xl">All of your ore selling dogs have died</p>
     {/if}
