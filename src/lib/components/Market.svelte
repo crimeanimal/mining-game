@@ -156,7 +156,7 @@
         </button>
         <button class={($player.ore > 1) ? sellButtonClass + ' col-span-2' : disabledButtonClass + ' col-span-2'} disabled={!($player.ore > 1)} on:click={() => sellOre($player.ore)}>sell all!</button>
     </div>
-    <div class="mx-auto h-64 w-11/12">
+    <div class="relative mx-auto h-64 w-11/12">
         <canvas id='chart' class=""></canvas>
     </div>
     <div class="grid grid-cols-2 px-4">

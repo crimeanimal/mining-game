@@ -129,7 +129,7 @@
             <p class="font-bold text-xl">Please connect your wallet to trade apes</p>
         {/if}
     </div>
-    <div class="mx-auto h-64 w-11/12">
+    <div class="relative mx-auto h-64 w-11/12">
         <canvas id='chartApe' class=""></canvas>
     </div>
     {#if $wallet.connected}
