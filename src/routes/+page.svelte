@@ -15,9 +15,9 @@
     <div style="height: 100vh;" class="container mx-auto grid md:grid-cols-2 xl:grid-cols-3">
         <Mine />
         <Market />
-        <Store />
         <ApeTerminal />
-        <Save />
+        <Store />
         <Messages />
+        <Save />
     </div>
 </div>
