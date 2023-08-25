@@ -10,7 +10,19 @@ function createOre() {
     return {
         subscribe,
         set,
-        update
+        update,
+        changePrice: () => update((n) => {
+            let change
+            if (Math.random() > 0.5) {
+                change = n.price * 0.12
+                n.price += change
+            } else {
+                change = n.price * 0.1
+                n.price -= change
+            }
+            n.priceHistory = [...n.priceHistory, n.price]
+            return n
+        })
     }
 }
 

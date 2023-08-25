@@ -17,7 +17,7 @@
      */
     let chart
     onMount(() => {
-        const interval = setInterval(changePrice, 1000);
+        const interval = setInterval(intervalFunc, 1000);
         
         const ctx = document.getElementById('chart');
         Chart.defaults.backgroundColor = '#d3d3d3';
@@ -83,17 +83,9 @@
         });
     }
 
-    function changePrice() {
-        let change
-        if (Math.random() > 0.5) {
-            change = $ore.price * 0.12
-            $ore.price += change
-        } else {
-            change = $ore.price * 0.1
-            $ore.price -= change
-        }
+    function intervalFunc() {
+        ore.changePrice()
         let time = new Date().toLocaleTimeString()
-        $ore.priceHistory = [...$ore.priceHistory, $ore.price]
         addData(chart, time, $ore.price)
     }
 
