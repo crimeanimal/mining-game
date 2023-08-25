@@ -120,24 +120,20 @@
      * @param {number} oreAmount
      */
     function sellOre(oreAmount) {
-        $player.ore -= oreAmount
-        $player.monie += ($ore.price * oreAmount)
+        player.transact.ore('SELL', oreAmount)
         if ($settings.sounds) {
-            chaChings(oreAmount)
+            chaChings(oreAmount > 20? 20 : oreAmount)
         }
-        messages.newMessage('ORE', 'Sold ' + oreAmount + ' ore at ' + formatter.currency($ore.price) + ' for a total of ' + formatter.currency((oreAmount*$ore.price)))
     }
 
     /**
      * @param {number} oreAmount
      */
      function buyOre(oreAmount) {
-        $player.monie -= ($ore.price * oreAmount)
-        $player.ore += oreAmount
+        player.transact.ore('BUY', oreAmount)
         if ($settings.sounds) {
-            chaChings(oreAmount)
+            chaChings(oreAmount > 20? 20 : oreAmount)
         }
-        messages.newMessage('ORE', 'Bought ' + oreAmount + ' ore at ' + formatter.currency($ore.price) + ' for a total of ' + formatter.currency((oreAmount*$ore.price)))
     }
 
     let buttonClassBase = 'h-10 px-5 m-2 transition-colors duration-150 bg-gray-700 rounded-lg'

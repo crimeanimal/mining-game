@@ -1,8 +1,8 @@
 <script>
     import { messages } from '$lib/stores/message';
     import { player } from '$lib/stores/player';
+    import { save } from '$lib/stores/save';
 
-    let playerBase64 = ''
     /**
      * @type {any}
      */
@@ -10,21 +10,6 @@
     let inputValue = ''
     $: if (inputValue != '') {
         playerObj = JSON.parse(atob(inputValue))
-    }
-
-    $: console.log(playerBase64)
-
-    function playerObjToB64() {
-        playerBase64 = btoa(JSON.stringify($player))
-        navigator.clipboard.writeText(playerBase64).then(() => {
-            console.log('Content copied to clipboard');
-            messages.newMessage('STATE', 'Player state copied to clipboard')
-            /* Resolved - text copied to clipboard successfully */
-            },() => {
-            console.error('Failed to copy');
-            messages.newMessage('STATE', 'Player state failed to save')
-            /* Rejected - text failed to copy to the clipboard */
-        });
     }
 
     function loadPlayerState() {
@@ -35,12 +20,12 @@
 
 <div class="container px-4 gap-2 grid grid-cols-2">
     <div>
-        <button on:click={playerObjToB64} class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800">
+        <button on:click={save.playerObjToB64} class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800">
             Save state
         </button>
-        {#if playerBase64 != ''}
+        {#if $save != ''}
             <p class="font-bold">Encoded player state:</p>
-            <p class='break-words'>{playerBase64}</p>
+            <p class='break-words'>{$save}</p>
         {/if}
     </div>
     <div>

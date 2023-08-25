@@ -1,6 +1,17 @@
 import { writable } from 'svelte/store';
 
-export const ore = writable({
-    price:10,
-    priceHistory: [10]
-});
+const startingPrice = 10
+
+function createOre() {
+    const { subscribe, set, update } = writable({
+        price:startingPrice,
+        priceHistory: [startingPrice]
+    });
+    return {
+        subscribe,
+        set,
+        update
+    }
+}
+
+export const ore = createOre()
