@@ -11,11 +11,6 @@
     $: if (inputValue != '') {
         playerObj = JSON.parse(atob(inputValue))
     }
-
-    function loadPlayerState() {
-        $player = playerObj
-        messages.newMessage('STATE', 'Player state loaded')
-    }
 </script>
 
 <div class="container px-4 gap-2 grid grid-cols-2">
@@ -31,7 +26,7 @@
     <div>
         <div class="relative flex flex-wrap items-stretch">
             <input class="flex-auto bg-gray-700 focus:bg-gray-700" type="text" bind:value={inputValue} />
-            <button on:click={loadPlayerState} class="flex-auto items-center h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800">
+            <button on:click={() => player.load(playerObj)} class="flex-auto items-center h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800">
                 Load state
             </button>
         </div>

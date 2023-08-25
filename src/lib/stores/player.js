@@ -122,6 +122,27 @@ function createPlayer() {
                 }
             }
             return n
+        }),
+        load: (/** @type {{ [x: string]: any; }} */ playerObj) => update((n) => {
+            // I think this is jank af
+            for (const [key, value] of Object.entries(n)) {
+                if (typeof value == 'object') {
+                    console.log(`${key}:`)
+                    for (const [key1, value1] of Object.entries(value)) {
+                        if (typeof value1 != 'function') {
+                            console.log(`    ${key1}: ${value1}  ==> ${playerObj[key][key1]}`);
+                            // @ts-ignore
+                            n[key][key1] = playerObj[key][key1]
+                        }
+                    }
+                } else {
+                    console.log(`${key}: ${value} ==> ${playerObj[key]}`);
+                    // @ts-ignore
+                    n[key] = playerObj[key]
+                }
+            }
+            messages.newMessage('STATE', 'Player state loaded')
+            return n
         })
     }
 }
