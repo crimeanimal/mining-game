@@ -43,7 +43,8 @@
                     y: {
                         beginAtZero: true
                     }
-                }
+                },
+                maintainAspectRatio: false
             }
         });
         
@@ -155,7 +156,9 @@
         </button>
         <button class={($player.ore > 1) ? sellButtonClass + ' col-span-2' : disabledButtonClass + ' col-span-2'} disabled={!($player.ore > 1)} on:click={() => sellOre($player.ore)}>sell all!</button>
     </div>
-    <canvas id='chart' class=""></canvas>
+    <div class="mx-auto h-64 w-11/12">
+        <canvas id='chart' class=""></canvas>
+    </div>
     <div class="grid grid-cols-2 px-4">
         <button class={($player.monie > $ore.price) ? buyButtonClass : disabledButtonClass} disabled={!($player.monie > $ore.price)} on:click={() => buyOre(1)}>buy one!</button>
         <button class={($player.monie > ($ore.price * 10)) ? buyButtonClass : disabledButtonClass} disabled={!($player.monie > ($ore.price * 10))} on:click={() => buyOre(10)}>buy ten!</button>

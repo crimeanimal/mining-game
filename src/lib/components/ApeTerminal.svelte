@@ -42,7 +42,8 @@
                     y: {
                         beginAtZero: true
                     }
-                }
+                },
+                maintainAspectRatio: false
             }
         });
         
@@ -61,11 +62,11 @@
         chart.data.datasets.forEach((dataset) => {
             if (dataset.label === 'Ape Price') {
                 dataset.data.push(newData);
-                dataset.data = dataset.data.slice(-100);
+                dataset.data = dataset.data.slice(-60);
                 // @ts-ignore
                 chart.data.labels.push(label);
                 // @ts-ignore
-                chart.data.labels = chart.data.labels.slice(-100);
+                chart.data.labels = chart.data.labels.slice(-60);
                 chart.update();
             }
         });
@@ -124,13 +125,13 @@
         </div>
     {/if}
     <div>
-        {#if $wallet.connected}
-            <p>ok ty</p>
-        {:else}
+        {#if !$wallet.connected}
             <p class="font-bold text-xl">Please connect your wallet to trade apes</p>
         {/if}
     </div>
-    <canvas id='chartApe' class=""></canvas>
+    <div class="mx-auto h-64 w-11/12">
+        <canvas id='chartApe' class=""></canvas>
+    </div>
     {#if $wallet.connected}
         <div class="grid grid-cols-2 px-4">
             <button class={$player.monie > $ape.price ? buyButtonClass : disabledButtonClass} on:click={() => buyApe(1)}>buy one!</button>
