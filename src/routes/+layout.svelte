@@ -15,6 +15,7 @@
     import bayc4 from '$lib/images/bayc4.webp'
     import bayc5 from '$lib/images/bayc5.webp'
     import broke from '$lib/images/broke.gif'
+    import { formatter } from "$lib/formatter";
 
     let bayc = [bayc1,bayc2,bayc3,bayc4,bayc5]
     let profilePic = bayc[Math.floor(Math.random() * bayc.length)]
@@ -102,8 +103,8 @@
 
 <div class="fixed w-full dark:text-gray-100 dark:bg-slate-700 grid grid-cols-2">
     <div class="flex justify-start content-end">
-        <p class="font-bold leading-relaxed px-4 text-3xl">Ore: ₥{stuffFormatter.format($ore.price)} <span class={oreChange > 0 ? 'text-green-400' : oreChange == 0 ? '' : 'text-red-400'}>{#if oreChange > 0}+{/if}{stuffFormatter.format(oreChange)}%</span></p>
-        <p class="font-bold leading-relaxed px-4 text-3xl">Apes: ₥{stuffFormatter.format($ape.price)} <span class={apeChange > 0 ? 'text-green-400' : apeChange == 0 ? '' : 'text-red-400'}>{#if apeChange > 0}+{/if}{stuffFormatter.format(apeChange)}%</span></p>
+        <p class="font-bold leading-relaxed px-4 text-3xl">Ore: {formatter.currency($ore.price)} <span class={oreChange > 0 ? 'text-green-400' : oreChange == 0 ? '' : 'text-red-400'}>{#if oreChange > 0}+{/if}{stuffFormatter.format(oreChange)}%</span></p>
+        <p class="font-bold leading-relaxed px-4 text-3xl">Apes: {formatter.currency($ape.price)} <span class={apeChange > 0 ? 'text-green-400' : apeChange == 0 ? '' : 'text-red-400'}>{#if apeChange > 0}+{/if}{stuffFormatter.format(apeChange)}%</span></p>
     </div>
     <div>
         <nav class="flex justify-end space-x-2 px-4">

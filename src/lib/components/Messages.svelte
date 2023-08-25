@@ -1,5 +1,4 @@
 <script>
-    // @ts-ignore
     import { messages } from '$lib/stores/message';
     import { player } from '$lib/stores/player'
 

@@ -1,22 +1,15 @@
 <script>
     import {onMount} from 'svelte';
-    // @ts-ignore
     import { ape } from '$lib/stores/ape';
     import { wallet } from '$lib/stores/wallet';
     import { player } from '$lib/stores/player';
+    import { formatter } from '$lib/formatter';
     import Chart from 'chart.js/auto';
     import { Colors } from 'chart.js';
     import { ore } from '$lib/stores/ore';
-    // @ts-ignore
     import { messages } from '$lib/stores/message'
 
     Chart.register(Colors);
-
-    let stuffFormatter = new Intl.NumberFormat("en-US", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-        notation: 'compact'
-    })
 
     /**
      * @type {Chart<"line", number[], number>}
@@ -139,7 +132,7 @@
     function sellApe(apeAmount) {
         $player.apes -= apeAmount
         $player.monie += ($ape.price * apeAmount)
-        messages.newMessage('APES', 'Sold ' + apeAmount + ' ape at ₥' + stuffFormatter.format($ape.price) + ' for a total of ₥' + stuffFormatter.format((apeAmount*$ape.price)))
+        messages.newMessage('APES', 'Sold ' + apeAmount + ' ape at ' + formatter.currency($ape.price) + ' for a total of ' + formatter.currency((apeAmount*$ape.price)))
     }
 
     let apeAmountBuy = 1
@@ -151,16 +144,16 @@
      function buyApe(apeAmount) {
         $player.monie -= ($ape.price * apeAmount)
         $player.apes += apeAmount
-        messages.newMessage('APES', 'Bought ' + apeAmount + ' apes at ₥' + stuffFormatter.format($ape.price) + ' for a total of ₥' + stuffFormatter.format((apeAmount*$ape.price)))
+        messages.newMessage('APES', 'Bought ' + apeAmount + ' apes at ' + formatter.currency($ape.price) + ' for a total of ' + formatter.currency((apeAmount*$ape.price)))
     }
 </script>
 
 <div class="container px-4">
     <p class="font-bold text-3xl">Welcome to the APE TERMINAL</p>
     <p>Sell apes to get monie</p>
-    <p>Apes are selling for <span class="font-bold text-1xl">₥{stuffFormatter.format($ape.price)}</span> monies</p>
-    <p>You have <span class="font-bold text-1xl">{stuffFormatter.format(Math.round($player.apes))}</span> ape</p>
-    <p>You have ₥{stuffFormatter.format($player.monie)} monies</p>
+    <p>Apes are selling for <span class="font-bold text-1xl">{formatter.currency($ape.price)}</span> monies</p>
+    <p>You have <span class="font-bold text-1xl">{formatter.item(Math.round($player.apes))}</span> ape</p>
+    <p>You have {formatter.currency($player.monie)} monies</p>
 
     {#if $wallet.connected}
         <div class="grid grid-cols-2 px-4">

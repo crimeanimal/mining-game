@@ -8,6 +8,7 @@
     import Chart from 'chart.js/auto';
     import { Colors } from 'chart.js';
     import { settings } from '$lib/stores/settings';
+    import { formatter } from '$lib/formatter';
 
     Chart.register(Colors);
 
@@ -51,13 +52,6 @@
             clearInterval(interval);
         };
     });
-
-    let stuffFormatter = new Intl.NumberFormat("en-US", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-        notation: 'compact'
-    })
-
     
     /**
      * @param {Chart<"line", number[], number>} chart
@@ -131,7 +125,7 @@
         if ($settings.sounds) {
             chaChings(oreAmount)
         }
-        messages.newMessage('ORE', 'Sold ' + oreAmount + ' ore at ₥' + stuffFormatter.format($ore.price) + ' for a total of ₥' + stuffFormatter.format((oreAmount*$ore.price)))
+        messages.newMessage('ORE', 'Sold ' + oreAmount + ' ore at ' + formatter.currency($ore.price) + ' for a total of ' + formatter.currency((oreAmount*$ore.price)))
     }
 
     /**
@@ -143,7 +137,7 @@
         if ($settings.sounds) {
             chaChings(oreAmount)
         }
-        messages.newMessage('ORE', 'Bought ' + oreAmount + ' ore at ₥' + stuffFormatter.format($ore.price) + ' for a total of ₥' + stuffFormatter.format((oreAmount*$ore.price)))
+        messages.newMessage('ORE', 'Bought ' + oreAmount + ' ore at ' + formatter.currency($ore.price) + ' for a total of ' + formatter.currency((oreAmount*$ore.price)))
     }
 
     let buttonClassBase = 'h-10 px-5 m-2 transition-colors duration-150 bg-gray-700 rounded-lg'
@@ -155,21 +149,21 @@
 <div class="container px-4">
     <p class="font-bold text-3xl">Welcome to the Ore Dump</p>
     <p>Sell ore to get monie</p>
-    <p>Ore is selling for <span class="font-bold text-1xl">₥{stuffFormatter.format($ore.price)}</span> monies</p>
+    <p>Ore is selling for <span class="font-bold text-1xl">{formatter.currency($ore.price)}</span> monies</p>
     <p>
-        You have <span class="font-bold text-1xl">{stuffFormatter.format($player.ore)}</span> ore
+        You have <span class="font-bold text-1xl">{formatter.item($player.ore)}</span> ore
         {#if $player.ore >=1 }
-            worth <span class="font-bold text-1xl">₥{stuffFormatter.format($player.ore*$ore.price)}</span>
+            worth <span class="font-bold text-1xl">{formatter.currency($player.ore*$ore.price)}</span>
         {/if}
     </p>
-    <p>You have ₥{stuffFormatter.format($player.monie)} monies</p>
+    <p>You have {formatter.currency($player.monie)} monies</p>
 
     <div class="grid grid-cols-2 px-4">
         <button class={($player.ore > 0) ? sellButtonClass : disabledButtonClass} disabled={!($player.ore > 0)} on:click={() => sellOre(1)}>sell one!</button>
         <button class={($player.ore > 10) ? sellButtonClass : disabledButtonClass} disabled={!($player.ore > 10)} on:click={() => sellOre(10)}>sell ten!</button>
         <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={oreAmountSell} />
         <button class={$player.ore >= oreAmountSell && oreAmountSell != 0 ? sellButtonClass : disabledButtonClass} disabled={!($player.ore >= oreAmountSell) && oreAmountSell != 0} on:click={() => sellOre(oreAmountSell)}>
-            sell {stuffFormatter.format(oreAmountSell)}!
+            sell {formatter.item(oreAmountSell)}!
         </button>
         <button class={($player.ore > 1) ? sellButtonClass + ' col-span-2' : disabledButtonClass + ' col-span-2'} disabled={!($player.ore > 1)} on:click={() => sellOre($player.ore)}>sell all!</button>
     </div>
@@ -179,7 +173,7 @@
         <button class={($player.monie > ($ore.price * 10)) ? buyButtonClass : disabledButtonClass} disabled={!($player.monie > ($ore.price * 10))} on:click={() => buyOre(10)}>buy ten!</button>
         <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={oreAmountBuy} />
         <button class={$player.monie > ($ore.price * oreAmountBuy) && oreAmountBuy != 0 ? buyButtonClass : disabledButtonClass} disabled={!($player.monie > ($ore.price * oreAmountBuy)) && oreAmountBuy != 0}  on:click={() => buyOre(oreAmountBuy)}>
-            buy {stuffFormatter.format(oreAmountBuy)}!
+            buy {formatter.item(oreAmountBuy)}!
         </button>
         <button class={(((Math.round($player.monie / $ore.price))-1) > 0) ? buyButtonClass + ' col-span-2' : disabledButtonClass + ' col-span-2'} disabled={!(((Math.round($player.monie / $ore.price))-1) > 0)} on:click={() => buyOre(Math.round(($player.monie / $ore.price))-1)}>buy {(Math.round(($player.monie / $ore.price))-1) > 0 ? (Math.round(($player.monie / $ore.price))-1) : 0}!</button>
     </div>

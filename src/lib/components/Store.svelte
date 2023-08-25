@@ -9,14 +9,9 @@
     import drill from '$lib/images/shop/drill.jpg'
     import pick from '$lib/images/shop/pick.png'
     import treats from '$lib/images/shop/treats.webp'
+    import { formatter } from '$lib/formatter';
 
     let images = [pick,drill,arm,bits,dog,treats,bottle]
-
-    let stuffFormatter = new Intl.NumberFormat("en-US", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-        notation: 'compact'
-    })
 
     /**
      * @param {any} id
@@ -66,7 +61,7 @@
                 $player.dogs.treats += quantity
                 $player.monie -= (item.price * quantity)
                 updatePrice(id, quantity)
-                messages.newMessage('DOGS', 'Bought ' + quantity + ' dogs at ₥' + stuffFormatter.format(item.price) + ' for a total of ₥' + stuffFormatter.format((item.price * quantity)))
+                messages.newMessage('DOGS', 'Bought ' + quantity + ' dogs at ' + formatter.currency(item.price) + ' for a total of ' + formatter.currency((item.price * quantity)))
                 break;
 
             case 7:
@@ -103,7 +98,7 @@
                     <img class="h-36 w-2/3 rounded-lg ring-gray-100 justify-self-center" src={images[item.id-1]} alt="">
                     <p class="font-bold">{item.name}</p>
                     <p>{item.description}</p>
-                    <p>{'₥'+stuffFormatter.format(item.price)}</p>
+                    <p>{formatter.currency(item.price)}</p>
                     <div class="grid grid-cols-2">
                         {#if item.price > $player.monie}
                             <button class="h-10 px-5 m-2 text-gray-300 transition-colors duration-150 bg-gray-700 rounded-lg cursor-not-allowed" on:click={() => buy(item.id, 1)} disabled>buy 1</button>
