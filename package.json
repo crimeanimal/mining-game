@@ -21,6 +21,7 @@
 		"autoprefixer": "^10.4.15",
 		"chart.js": "^4.3.3",
 		"compromise": "^14.10.0",
+		"daisyui": "^3.6.3",
 		"postcss": "^8.4.28",
 		"random-words": "^2.0.0",
 		"sortablejs": "^1.15.0",
