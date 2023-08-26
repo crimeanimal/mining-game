@@ -6,6 +6,10 @@ const currency = new Intl.NumberFormat("en-US", {
 const item = new Intl.NumberFormat("en-US", {
     notation: 'compact'
 })
+const chart = new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 5,
+    notation: 'compact'
+})
 export const formatter = {
     currency: (/** @type {number | bigint | undefined} */ value) => {
         if (value != undefined) {
@@ -16,5 +20,10 @@ export const formatter = {
         if (value != undefined) {
             return item.format(value)
         }
-    }
+    },
+    chart: (/** @type {number | bigint | string | undefined} */ value) => {
+        if (value != undefined && typeof value != 'string') {
+            return '₥'+chart.format(value)
+        }
+    },
 } 

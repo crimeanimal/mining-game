@@ -40,7 +40,12 @@
             options: {
                 scales: {
                     y: {
-                        beginAtZero: true
+                        type: 'logarithmic',
+                        ticks: {
+                            callback: function(value, index, ticks) {
+                                return formatter.chart(value)
+                            }
+                        }
                     }
                 },
                 maintainAspectRatio: false
