@@ -23,6 +23,7 @@
 		"compromise": "^14.10.0",
 		"postcss": "^8.4.28",
 		"random-words": "^2.0.0",
+		"sortablejs": "^1.15.0",
 		"svelte": "^4.0.5",
 		"svelte-check": "^3.4.3",
 		"synonyms": "^1.0.1",
