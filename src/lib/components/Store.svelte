@@ -92,7 +92,7 @@
 
         <h3>Inventory:</h3>
 
-        <div class="grid grid-cols-2">
+        <div class="h-96 overflow-auto grid grid-cols-2">
             {#each $shop.inventory as item (item.id)}
                 {#if item.unlock <= $player.level}
                     <div class="grid grid-cols-1 container">
