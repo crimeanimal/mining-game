@@ -26,10 +26,12 @@
             <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => filterType = 'GREETING'}>greeting</button>
             <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800" on:click={() => filterType = 'ALL'}>all</button>
         </div>
-        <ul>
-            {#each filteredMessages as message}
-                <li>[{message.time}] - {message.type} - {message.content}</li>
-            {/each}
-        </ul>
+        <div class="h-96 overflow-auto">
+            <ul>
+                {#each filteredMessages as message}
+                    <li>[{message.time}] - {message.type} - {message.content}</li>
+                {/each}
+            </ul>
+        </div>
     </div>
 </div>
