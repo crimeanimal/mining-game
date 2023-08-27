@@ -5,7 +5,7 @@ export const shop = writable({
         {
             id: 1,
             name: 'pick upgrade',
-            description: 'increase ore produced by mining by 10%',
+            description: 'increase damage done by picks by 10%',
             price: 25,
             unlock: 1
         },
