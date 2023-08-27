@@ -19,8 +19,8 @@
 	<title>crimeanimal - Mining Game</title>
 </svelte:head>
 
-<div style="height: 100vh;" class="dark:text-gray-100 w-full h-full mx-0 pt-16">
-    <ul id="items" style="height: 100vh;" class="container mx-auto grid md:grid-cols-2 xl:grid-cols-3">
+<div class="p-24">
+    <ul id="items" class="container mx-auto grid md:grid-cols-2 xl:grid-cols-3 gap-12">
         <li><Mine /></li>
         <li><Market /></li>
         <li><ApeTerminal /></li>
