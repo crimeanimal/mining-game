@@ -1,9 +1,6 @@
 <script>
     import "../app.css";
     import {onMount} from 'svelte';
-    import fast_car from '$lib/music/fast_car.mp3'
-    import human from '$lib/music/human.mp3'
-    import virtual_insanity from '$lib/music/virtual_insanity.mp3'
     import { settings } from "$lib/stores/settings";
     import { ore } from "$lib/stores/ore";
     import { ape } from "$lib/stores/ape";
@@ -12,8 +9,6 @@
     import { formatter } from "$lib/formatter";
     import WalletInfo from "$lib/components/WalletInfo.svelte";
     import Settings from "$lib/components/Settings.svelte";
-
-    let songs = [fast_car,human,virtual_insanity]
 
     let stuffFormatter = new Intl.NumberFormat("en-US", {
         minimumFractionDigits: 2,
@@ -55,35 +50,6 @@
     $: oreChangeall = getPercentageChange($ore.priceHistory[0], $ore.price)*-1
 
     $: apeChangeAll = getPercentageChange($ape.priceHistory[0], $ape.price)*-1
-
-    /**
-     * @type {HTMLAudioElement}
-     */
-    let musicAudio
-
-    $: if ($settings.music && musicAudio != undefined) {
-        musicAudio.play();
-    } else if ($settings.music == false && musicAudio != undefined) {
-        musicAudio.pause();
-    }
-
-    function playNewSong() {
-        if ($settings.music) {
-            musicAudio = new Audio(songs[Math.floor(Math.random() * songs.length)])
-            musicAudio.volume = 0.2
-            musicAudio.play();
-        }
-    }
-
-    onMount(() => {
-        playNewSong()
-    })
-
-    $: if (musicAudio != undefined) {
-        musicAudio.onended = function() {
-            playNewSong()
-        }; 
-    }
 </script>
 
 

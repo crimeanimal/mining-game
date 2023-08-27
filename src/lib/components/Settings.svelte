@@ -1,5 +1,11 @@
 <script>
     import { settings } from "$lib/stores/settings";
+    import { onMount } from "svelte";
+
+    import fast_car from '$lib/music/fast_car.mp3'
+    import human from '$lib/music/human.mp3'
+    import virtual_insanity from '$lib/music/virtual_insanity.mp3'
+    let songs = [fast_car,human,virtual_insanity]
 
     function toggleSound() {
         $settings.sounds = !$settings.sounds
@@ -7,6 +13,35 @@
 
     function toggleMusic() {
         $settings.music = !$settings.music
+    }
+    
+    /**
+     * @type {HTMLAudioElement}
+     */
+     let musicAudio
+
+    $: if ($settings.music && musicAudio != undefined) {
+        musicAudio.play();
+    } else if ($settings.music == false && musicAudio != undefined) {
+        musicAudio.pause();
+    }
+
+    function playNewSong() {
+        if ($settings.music) {
+            musicAudio = new Audio(songs[Math.floor(Math.random() * songs.length)])
+            musicAudio.volume = 0.2
+            musicAudio.play();
+        }
+    }
+
+    onMount(() => {
+        playNewSong()
+    })
+
+    $: if (musicAudio != undefined) {
+        musicAudio.onended = function() {
+            playNewSong()
+        }; 
     }
 </script>
 
