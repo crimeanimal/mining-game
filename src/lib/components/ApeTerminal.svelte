@@ -109,45 +109,63 @@
     let disabledButtonClass = buttonClassBase + " text-gray-300 cursor-not-allowed"
     let sellButtonClass = buttonClassBase + " bg-red-700 text-gray-100 focus:shadow-outline hover:bg-gray-800"
     let buyButtonClass = buttonClassBase + " bg-green-700 text-gray-100 focus:shadow-outline hover:bg-gray-800"
+
+    let sell = false
 </script>
 
-<div class="container px-4">
-    <p class="font-bold text-3xl">Welcome to the APE TERMINAL</p>
-    <p>Sell apes to get monie</p>
-    <p>Apes are selling for <span class="font-bold text-1xl">{formatter.currency($ape.price)}</span> monies</p>
-    <p>You have <span class="font-bold text-1xl">{formatter.item(Math.round($player.apes))}</span> ape</p>
-    <p>You have {formatter.currency($player.monie)} monies</p>
+<div class="card w-full bg-base-200 shadow-xl">
+    <figure>
+        <div class="relative mx-auto h-64 w-11/12">
+            <canvas id='chartApe' class=""></canvas>
+        </div>
+    </figure>
+    <div class="card-body">
+        <h2 class="card-title">Welcome to the APE TERMINAL</h2>
+        <p>Sell apes to get monie</p>
+        <p>Apes are selling for <span class="font-bold text-1xl">{formatter.currency($ape.price)}</span> monies</p>
+        <p>You have <span class="font-bold text-1xl">{formatter.item(Math.round($player.apes))}</span> ape</p>
+        <p>You have {formatter.currency($player.monie)} monies</p>
 
-    {#if $wallet.connected}
-        <div class="grid grid-cols-2 px-4">
-            <button class={$player.apes > 0 ? sellButtonClass : disabledButtonClass} disabled={!($player.apes > 0)} on:click={() => sellApe(1)}>sell one!</button>
-            <button class={$player.apes >= 10 ? sellButtonClass : disabledButtonClass} disabled={!($player.apes >= 10)} on:click={() => sellApe(10)}>sell ten!</button>
-            <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={apeAmountSell} />
-            <button class={$player.apes >= apeAmountSell && apeAmountSell != 0 ? sellButtonClass : disabledButtonClass} disabled={!($player.apes >= apeAmountSell) && apeAmountSell != 0} on:click={() => sellApe(apeAmountSell)}>
-                sell {apeAmountSell}!
-            </button>
-            <button class={$player.apes > 1 ? sellButtonClass + ' col-span-2' : disabledButtonClass + ' col-span-2'} disabled={!($player.apes > 1)} on:click={() => sellApe($player.apes)}>sell all!</button>
-        </div>
-    {/if}
-    <div>
-        {#if !$wallet.connected}
-            <p class="font-bold text-xl">Please connect your wallet to trade apes</p>
-        {/if}
-    </div>
-    <div class="relative mx-auto h-64 w-11/12">
-        <canvas id='chartApe' class=""></canvas>
-    </div>
-    {#if $wallet.connected}
-        <div class="grid grid-cols-2 px-4">
-            <button class={$player.monie > $ape.price ? buyButtonClass : disabledButtonClass} on:click={() => buyApe(1)}>buy one!</button>
-            <button class={$player.monie > ($ape.price * 10) ? buyButtonClass : disabledButtonClass} on:click={() => buyApe(10)}>buy ten!</button>
-            {#if $player.monie > ($ape.price * apeAmountBuy) && apeAmountBuy != 0}
-            <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={apeAmountBuy} />
-            <button class={$player.monie > ($ape.price * apeAmountBuy) && apeAmountBuy != 0 ? buyButtonClass : disabledButtonClass} disabled={!($player.monie > ($ape.price * apeAmountBuy)) && apeAmountBuy != 0} on:click={() => buyApe(apeAmountBuy)}>
-                buy {apeAmountBuy}!
-            </button>
+        <div>
+            {#if !$wallet.connected}
+                <p class="font-bold text-xl">Please connect your wallet to trade apes</p>
             {/if}
-            <button class={$player.monie > (($player.monie / $ape.price)+1) ? buyButtonClass + ' col-span-2' : disabledButtonClass + ' col-span-2'} on:click={() => buyApe(Math.round(($player.monie / $ape.price)))}>buy {Math.round(($player.monie / $ape.price))}!</button>
         </div>
-    {/if}
+
+        <div class="card-actions text-sm">
+            <div class="form-control">
+                <label class="label cursor-pointer ">
+                  <div class="space-x-2">
+                    <span class="label-text">buy/sell </span> 
+                    <input type="checkbox" class="toggle" bind:checked={sell} />
+                  </div>
+                </label>
+              </div>
+            {#if sell}
+                {#if $wallet.connected}
+                    <div class="grid grid-cols-2 px-4">
+                        <button class={$player.apes > 0 ? sellButtonClass : disabledButtonClass} disabled={!($player.apes > 0)} on:click={() => sellApe(1)}>sell one!</button>
+                        <button class={$player.apes >= 10 ? sellButtonClass : disabledButtonClass} disabled={!($player.apes >= 10)} on:click={() => sellApe(10)}>sell ten!</button>
+                        <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={apeAmountSell} />
+                        <button class={$player.apes >= apeAmountSell && apeAmountSell != 0 ? sellButtonClass : disabledButtonClass} disabled={!($player.apes >= apeAmountSell) && apeAmountSell != 0} on:click={() => sellApe(apeAmountSell)}>
+                            sell {apeAmountSell}!
+                        </button>
+                        <button class={$player.apes > 1 ? sellButtonClass + ' col-span-2' : disabledButtonClass + ' col-span-2'} disabled={!($player.apes > 1)} on:click={() => sellApe($player.apes)}>sell all!</button>
+                    </div>
+                {/if}
+            {:else}
+                {#if $wallet.connected}
+                    <div class="grid grid-cols-2 px-4">
+                        <button class={$player.monie > $ape.price ? buyButtonClass : disabledButtonClass} on:click={() => buyApe(1)}>buy one!</button>
+                        <button class={$player.monie > ($ape.price * 10) ? buyButtonClass : disabledButtonClass} on:click={() => buyApe(10)}>buy ten!</button>
+                        <input class="bg-gray-700 focus:bg-gray-700" type="number" bind:value={apeAmountBuy} />
+                        <button class={$player.monie > ($ape.price * apeAmountBuy) && apeAmountBuy != 0 ? buyButtonClass : disabledButtonClass} disabled={!($player.monie > ($ape.price * apeAmountBuy)) && apeAmountBuy != 0} on:click={() => buyApe(apeAmountBuy)}>
+                            buy {apeAmountBuy}!
+                        </button>
+                        <button class={(((Math.round($player.monie / $ape.price))-1) > 0) ? buyButtonClass + ' col-span-2' : disabledButtonClass + ' col-span-2'} disabled={!(((Math.round($player.monie / $ape.price))-1) > 0)} on:click={() => buyApe(Math.round(($player.monie / $ape.price)-1))}>buy {(Math.round(($player.monie / $ape.price))-1) > 0 ? (Math.round(($player.monie / $ape.price))-1) : 0}!</button>
+                    </div>
+                {/if}
+            {/if}
+        </div>
+    </div>
 </div>

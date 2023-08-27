@@ -36,7 +36,7 @@
     }
 </script>
 
-<div class="card w-96 bg-base-200 shadow-xl">
+<div class="card w-full bg-base-200 shadow-xl">
     <div class="card-body">
       <h2 class="card-title">Welcome to the Mines</h2>
       <p>Current stone:</p>
