@@ -39,7 +39,7 @@
     $: apeChangeAll = getPercentageChange($ape.priceHistory[0], $ape.price)*-1
 </script>
 
-<div class="flex justify-start content-end grow">
-    <p class="font-bold leading-relaxed px-4 text-3xl">Ore: {formatter.currency($ore.price)} <span class={oreChange > 0 ? 'text-green-400' : oreChange == 0 ? '' : 'text-red-400'}>{#if oreChange > 0}+{/if}{formatter.item(oreChange)}% <span class={oreChangeall > 0 ? 'text-green-400' : oreChangeall == 0 ? '' : 'text-red-400'}>{#if oreChangeall > 0}+{/if}{formatter.item(oreChangeall)}%</span></p>
-    <p class="font-bold leading-relaxed px-4 text-3xl">Apes: {formatter.currency($ape.price)} <span class={apeChange > 0 ? 'text-green-400' : apeChange == 0 ? '' : 'text-red-400'}>{#if apeChange > 0}+{/if}{formatter.item(apeChange)}%  <span class={apeChangeAll > 0 ? 'text-green-400' : apeChangeAll == 0 ? '' : 'text-red-400'}>{#if apeChangeAll > 0}+{/if}{formatter.item(apeChangeAll)}%</span></p>
+<div class="flex justify-start content-end">
+    <p class="font-bold leading-relaxed px-4 xl:text-3xl md:text-lg">Ore: {formatter.currency($ore.price)} <span class={oreChange > 0 ? 'text-green-400' : oreChange == 0 ? '' : 'text-red-400'}>{#if oreChange > 0}+{/if}{formatter.item(oreChange)}% <span class={oreChangeall > 0 ? 'text-green-400' : oreChangeall == 0 ? '' : 'text-red-400'}>{#if oreChangeall > 0}+{/if}{formatter.item(oreChangeall)}%</span></p>
+    <p class="font-bold leading-relaxed px-4 xl:text-3xl md:text-lg">Apes: {formatter.currency($ape.price)} <span class={apeChange > 0 ? 'text-green-400' : apeChange == 0 ? '' : 'text-red-400'}>{#if apeChange > 0}+{/if}{formatter.item(apeChange)}%  <span class={apeChangeAll > 0 ? 'text-green-400' : apeChangeAll == 0 ? '' : 'text-red-400'}>{#if apeChangeAll > 0}+{/if}{formatter.item(apeChangeAll)}%</span></p>
 </div>

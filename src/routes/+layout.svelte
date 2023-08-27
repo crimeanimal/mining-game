@@ -6,13 +6,15 @@
 </script>
 
 
-<div class="fixed w-full dark:text-gray-100 dark:bg-slate-700 flex">
-    <Ticker />
-    <div class="">
-        <nav class="flex justify-end space-x-2 px-4">
+<div class="navbar bg-base-100">
+    <div class="flex-1">
+        <Ticker />
+    </div>
+    <div class="flex-none">
+        <div class="flex justify-end space-x-2 px-4">
             <WalletInfo />
             <Settings />
-        </nav>
+        </div>
     </div>
 </div>
 <slot />
