@@ -5,7 +5,8 @@
     import fast_car from '$lib/music/fast_car.mp3'
     import human from '$lib/music/human.mp3'
     import virtual_insanity from '$lib/music/virtual_insanity.mp3'
-    let songs = [fast_car,human,virtual_insanity]
+    import oot from '$lib/music/oot.mp3'
+    let songs = [fast_car,human,virtual_insanity,oot]
 
     function toggleSound() {
         $settings.sounds = !$settings.sounds
