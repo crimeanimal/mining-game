@@ -27,13 +27,20 @@
         musicAudio.pause();
     }
 
+    let songIndex = Math.floor(Math.random() * songs.length)
+
     function playNewSong() {
         if (isPlaying(musicAudio)) {
             musicAudio.pause();
             musicAudio.currentTime = 0;
         }
         if ($settings.music) {
-            musicAudio = new Audio(songs[Math.floor(Math.random() * songs.length)])
+            let newSongIndex = Math.floor(Math.random() * songs.length)
+            while (newSongIndex == songIndex) {
+                newSongIndex = Math.floor(Math.random() * songs.length)
+            }
+            songIndex = newSongIndex
+            musicAudio = new Audio(songs[songIndex])
             musicAudio.volume = 0.2
             musicAudio.play();
         }
