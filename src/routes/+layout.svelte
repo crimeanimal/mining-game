@@ -6,7 +6,7 @@
 </script>
 
 
-<div class="navbar bg-base-300">
+<div class="fixed z-20 navbar bg-base-300">
     <div class="flex-1">
         <Ticker />
     </div>
